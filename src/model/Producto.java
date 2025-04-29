@@ -41,4 +41,3 @@ public class Producto {
         "\nTalla: " + this.getTalla() + " Precio: " + this.getPrecio();
     }
 }
-
