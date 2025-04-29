@@ -19,7 +19,3 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
 
 
 
-host: preda.es
-port: 4141
-user: tienda
-pass: GestorTiendaRopa8743

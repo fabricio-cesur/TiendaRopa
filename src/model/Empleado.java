@@ -87,28 +87,11 @@ private String email;
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Empleado{");
-        sb.append("id=").append(id);
-        sb.append(", nombre=").append(nombre);
-        sb.append(", apellido=").append(apellido);
-        sb.append(", dni=").append(dni);
-        sb.append(", cargo=").append(cargo);
-        sb.append(", Saldo=").append(Saldo);
-        sb.append(", telefono=").append(telefono);
-        sb.append(", email=").append(email);
-        sb.append('}');
-        return sb.toString();
+        return "Empleado [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", cargo="
+                + cargo + ", Saldo=" + Saldo + ", telefono=" + telefono + ", email=" + email + "]";
     }
 
+    
+     
    
-
-    
-
-
-    
-    
-
- 
-
 }
