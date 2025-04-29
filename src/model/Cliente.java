@@ -1,3 +1,5 @@
+package model;
+
 public class Cliente {
     int id;
     String dni;
