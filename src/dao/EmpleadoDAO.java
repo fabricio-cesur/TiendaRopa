@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Empleado;
 
-
 public class EmpleadoDAO {
 
     // Método para insertar un nuevo empleado (CREATE)
     public static void agregarEmpleado(Empleado empleado) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "INSERT INTO empleados (nombre, apellido, dni, cargo, salario, telefono, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement stmt = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            String query = "{CALL InsertarEmpleado(?, ?, ?, ?, ?, ?, ?)}";
+            try (CallableStatement stmt = conexion.prepareCall(query)) {
                 stmt.setString(1, empleado.getNombre());
                 stmt.setString(2, empleado.getApellido());
                 stmt.setString(3, empleado.getDni());
@@ -22,14 +21,13 @@ public class EmpleadoDAO {
                 stmt.setString(6, empleado.getTelefono());
                 stmt.setString(7, empleado.getEmail());
 
-                int filasInsertadas = stmt.executeUpdate();
-                if (filasInsertadas > 0) {
-                    ResultSet generatedKeys = stmt.getGeneratedKeys();
-                    if (generatedKeys.next()) {
-                        empleado.setId(generatedKeys.getInt(1));
-                    }
-                    System.out.println("Empleado agregado con éxito. ID asignado: " + empleado.getId());
+                stmt.executeUpdate();
+                // Obtener el ID generado por el procedimiento almacenado
+                ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    empleado.setId(generatedKeys.getInt(1));
                 }
+                System.out.println("Empleado agregado con éxito. ID asignado: " + empleado.getId());
             } catch (SQLException e) {
                 System.out.println("Error al agregar empleado: " + e.getMessage());
             } 
@@ -41,8 +39,9 @@ public class EmpleadoDAO {
         List<Empleado> listaEmpleados = new ArrayList<>();
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "SELECT id, nombre, apellido, dni, puesto, salario, telefono, email FROM empleados";
-            try (Statement stmt = conexion.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            String query = "{CALL ObtenerTodosEmpleados()}";
+            try (CallableStatement stmt = conexion.prepareCall(query);
+                 ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Empleado empleado = new Empleado(
                             rs.getInt("id"),
@@ -58,7 +57,7 @@ public class EmpleadoDAO {
                 }
             } catch (SQLException e) {
                 System.out.println("Error al obtener todos los empleados: " + e.getMessage());
-            }
+            } 
         }
         return listaEmpleados;
     }
@@ -68,26 +67,26 @@ public class EmpleadoDAO {
         Empleado empleado = null;
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "SELECT id, nombre, apellido, dni, puesto, salario, telefono, email FROM empleados WHERE id = ?";
-            try (PreparedStatement stmt = conexion.prepareStatement(query);) {
+            String query = "{CALL ObtenerEmpleadoPorId(?)}";
+            try (CallableStatement stmt = conexion.prepareCall(query)) {
                 stmt.setInt(1, id);
                 try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next()) {
                         empleado = new Empleado(
-                                rs.getInt("id"),
-                                rs.getString("nombre"),
-                                rs.getString("apellido"),
-                                rs.getString("dni"),
-                                rs.getString("puesto"),
-                                rs.getDouble("salario"),
-                                rs.getString("telefono"),
-                                rs.getString("email")
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getString("apellido"),
+                            rs.getString("dni"),
+                            rs.getString("puesto"),
+                            rs.getDouble("salario"),
+                            rs.getString("telefono"),
+                            rs.getString("email")
                         );
                     }
                 }
             } catch (SQLException e) {
                 System.out.println("Error al obtener empleado por ID: " + e.getMessage());
-            } 
+            }
         }
         return empleado;
     }
@@ -96,8 +95,8 @@ public class EmpleadoDAO {
     public static void actualizarEmpleado(Empleado empleado) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE empleados SET nombre = ?, apellido = ?, dni = ?, puesto = ?, salario = ?, telefono = ?, email = ? WHERE id = ?";
-            try (PreparedStatement stmt = conexion.prepareStatement(query)) {
+            String query = "{CALL ActualizarEmpleado(?, ?, ?, ?, ?, ?, ?, ?)}";
+            try (CallableStatement stmt = conexion.prepareCall(query)) {
                 stmt.setString(1, empleado.getNombre());
                 stmt.setString(2, empleado.getApellido());
                 stmt.setString(3, empleado.getDni());
@@ -106,11 +105,8 @@ public class EmpleadoDAO {
                 stmt.setString(6, empleado.getTelefono());
                 stmt.setString(7, empleado.getEmail());
                 stmt.setInt(8, empleado.getId());
-
-                int filasActualizadas = stmt.executeUpdate();
-                if (filasActualizadas > 0) {
-                    System.out.println("Empleado actualizado con éxito.");
-                }
+                stmt.executeUpdate();
+                System.out.println("Empleado actualizado con éxito.");
             } catch (SQLException e) {
                 System.out.println("Error al actualizar empleado: " + e.getMessage());
             } 
@@ -121,16 +117,15 @@ public class EmpleadoDAO {
     public static void eliminarEmpleado(int id) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "DELETE FROM empleados WHERE id = ?";
-            try (PreparedStatement stmt = conexion.prepareStatement(query)) {
+            String query = "{CALL EliminarEmpleado(?)}";
+            try (CallableStatement stmt = conexion.prepareCall(query)) {
                 stmt.setInt(1, id);
-                int filasEliminadas = stmt.executeUpdate();
-                if (filasEliminadas > 0) {
-                    System.out.println("Empleado eliminado con éxito.");
-                }
+                stmt.executeUpdate();
+                System.out.println("Empleado eliminado con éxito.");
             } catch (SQLException e) {
                 System.out.println("Error al eliminar empleado: " + e.getMessage());
             }
         }
     }
 }
+
