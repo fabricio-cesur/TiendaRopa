@@ -85,30 +85,4 @@ private String email;
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Empleado{");
-        sb.append("id=").append(id);
-        sb.append(", nombre=").append(nombre);
-        sb.append(", apellido=").append(apellido);
-        sb.append(", dni=").append(dni);
-        sb.append(", cargo=").append(cargo);
-        sb.append(", Saldo=").append(Saldo);
-        sb.append(", telefono=").append(telefono);
-        sb.append(", email=").append(email);
-        sb.append('}');
-        return sb.toString();
-    }
-
-   
-
-    
-
-
-    
-    
-
- 
-
-}
+   }
