@@ -7,7 +7,6 @@ public class Venta {
     private Cliente cliente;
     private String fecha_venta;
     private Double total; //Importe total de venta
-    private String metodo_pago; //Efectivo o tarjeta
     private Empleado empleado; //Empleado que realizó la venta
     private boolean estado; //Estado de la venta (realizada o !realizada)
     private boolean cancelado; //Cancelada o no
@@ -15,11 +14,10 @@ public class Venta {
     ArrayList<Producto> productos = new ArrayList<>(); // Lista de productos vendidos
     
     //Constructor
-    public Venta(Cliente cliente, String fecha_venta, Double total, String metodo_pago, Empleado empleado, boolean estado, boolean cancelado, int id_descuento) {
+    public Venta(Cliente cliente, String fecha_venta, Double total, Empleado empleado, boolean estado, boolean cancelado, int id_descuento) {
         this.cliente = cliente;
         this.fecha_venta = fecha_venta;
         this.total = total;
-        this.metodo_pago = metodo_pago;
         this.empleado = empleado;
         this.estado = estado;
         this.cancelado = cancelado;
@@ -31,7 +29,6 @@ public class Venta {
     public Cliente getCliente() { return cliente; }
     public String getFecha_venta() { return fecha_venta; }
     public Double getTotal() { return total; }
-    public String getMetodo_pago() { return metodo_pago; }
     public Empleado getEmpleado() { return empleado; }
     public boolean getEstado() { return estado; }
     public boolean getCancelado() { return cancelado; }
@@ -43,7 +40,6 @@ public class Venta {
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
     public void setFecha_venta(String fecha_venta) { this.fecha_venta = fecha_venta; }
     public void setTotal(Double total) { this.total = total; }
-    public void setMetodo_pago(String metodo_pago) { this.metodo_pago = metodo_pago; }
     public void setEmpleado(Empleado empleado) { this.empleado = empleado; }
     public void setEstado(boolean estado) { this.estado = estado; }
     public void setCancelado(boolean cancelado) { this.cancelado = cancelado; }
@@ -51,6 +47,7 @@ public class Venta {
     public void setProductos(ArrayList<Producto> productos) { this.productos = productos; } //Setea la lista de productos vendidos
 
     //toString
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -59,14 +56,15 @@ public class Venta {
         sb.append(", cliente=").append(cliente);
         sb.append(", fecha_venta=").append(fecha_venta);
         sb.append(", total=").append(total);
-        sb.append(", metodo_pago=").append(metodo_pago);
         sb.append(", empleado=").append(empleado);
         sb.append(", estado=").append(estado);
         sb.append(", cancelado=").append(cancelado);
+        sb.append(", id_descuento=").append(id_descuento);
         sb.append(", productos=").append(productos);
         sb.append('}');
         return sb.toString();
     }
+    
 
 
 }
