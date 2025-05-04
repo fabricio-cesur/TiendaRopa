@@ -2,42 +2,65 @@ package model;
 
 public class Producto {
     //Atributos
-    private String id;
-    private String tipo;
+    private int idProducto;
     private String nombre;
+    private String descripcion;
+    private Double precio;
+    private int stock; //Cantidad de productos disponibles
+    private String talla; //Talla del producto (36,38,40,42,..) (S, M, L, XL)
+    private String color; //Color del producto (Rojo, Azul, Verde, Amarillo, etc.)
     private String marca;
-    private String talla;
-    private double precio;
-    
+    private String categoria; //Categoria del producto (Ropa, Calzado, Accesorios, etc.)
+
     //Constructor
-    public Producto (String tipo, String nombre, String marca, String talla, double precio) {
-        this.tipo = tipo;
+    public Producto(String nombre, String descripcion, Double precio, int stock, String talla, String color, String marca, String categoria) {
         this.nombre = nombre;
-        this.marca = marca;
-        this.talla = talla;
+        this.descripcion = descripcion;
         this.precio = precio;
+        this.stock = stock;
+        this.talla = talla;
+        this.color = color;
+        this.marca = marca;
+        this.categoria = categoria;
     }
 
     //Getters
-    public String getId() { return this.id; }
-    public String getTipo() { return this.tipo; }
-    public String getNombre() { return this.nombre; }
-    public String getMarca() { return this.marca; }
-    public String getTalla() { return this.talla; }
-    public double getPrecio() { return this.precio; }
+    public int getIdProducto() {return idProducto;}
+    public String getNombre() {return nombre;}
+    public String getDescripcion() {return descripcion;}
+    public Double getPrecio() {return precio;}
+    public int getStock() {return stock;}
+    public String getTalla() {return talla;}
+    public String getColor() {return color;}
+    public String getMarca() {return marca;}
+    public String getCategoria() {return categoria;}
+
     //Setters
-    public void setId(String id) { this.id = id; }
-    public void setTipo(String tipo) { this.tipo = tipo; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setMarca(String marca) { this.marca = marca; }
-    public void setTalla(String talla) { this.talla = talla; }
-    public void setPrecio(double precio) { this.precio = precio; }
+    public void setIdProducto(int idProducto) {this.idProducto = idProducto;}
+    public void setNombre(String nombre) {this.nombre = nombre;}
+    public void setDescripcion(String descripcion) {this.descripcion = descripcion;}
+    public void setPrecio(Double precio) {this.precio = precio;}
+    public void setStock(int stock) {this.stock = stock;}
+    public void setTalla(String talla) {this.talla = talla;}
+    public void setColor(String color) {this.color = color;}
+    public void setMarca(String marca) {this.marca = marca;}
+    public void setCategoria(String categoria) {this.categoria = categoria;}
 
     @Override
-    //toString
     public String toString() {
-        return "ID: " + this.getId() + " tipo: " + this.getTipo() +
-        "\nNombre: " + this.getNombre() + " Marca: " + this.getMarca() + 
-        "\nTalla: " + this.getTalla() + " Precio: " + this.getPrecio();
+        return "Producto{" +
+                "idProducto=" + idProducto +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", precio=" + precio +
+                ", stock=" + stock +
+                ", talla='" + talla + '\'' +
+                ", color='" + color + '\'' +
+                ", marca='" + marca + '\'' +
+                ", categoria='" + categoria + '\'' +
+                '}';
     }
+    
+
+
 }

@@ -2,37 +2,52 @@ package model;
 
 public class Cliente {
     //Atributos
-    private String id;
-    private String dni;
+    private int idCliente;
     private String nombre;
-    private String telefono;
+    private String apellido;
     private String email;
+    private String direccion;
+    private String telefono;
+    private String fechaRegistro; //Fecha de registro del cliente
 
     //Constructor
-    public Cliente(String dni, String nombre, String telefono, String email) {
-        this.dni = dni;
+    public Cliente(String nombre, String apellido, String email, String direccion, String telefono, String fechaRegistro) {
         this.nombre = nombre;
-        this.telefono = telefono;
+        this.apellido = apellido;
         this.email = email;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.fechaRegistro = fechaRegistro;
     }
 
     //Getters
-    public String getId() { return this.id; }
-    public String getDni() { return this.dni; }
-    public String getNombre() { return this.nombre; }
-    public String getTelefono() { return this.telefono; }
-    public String getEmail() { return this.email; }
+    public int getIdCliente() { return idCliente; }
+    public String getNombre() { return nombre; }
+    public String getApellido() { return apellido; }
+    public String getEmail() { return email; }
+    public String getDireccion() { return direccion; }
+    public String getTelefono() { return telefono; }
+    public String getFechaRegistro() { return fechaRegistro; }
+
     //Setters
-    public void setId(String id) { this.id = id; }
-    public void setDni(String dni) { this.dni = dni; }
+    public void setIdCliente(int idCliente) { this.idCliente = idCliente; }
     public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
+    public void setApellido(String apellido) { this.apellido = apellido; }
     public void setEmail(String email) { this.email = email; }
+    public void setDireccion(String direccion) { this.direccion = direccion; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
 
     @Override
     public String toString() {
-        return "ID: " + this.getId() + ", DNI: " + this.getDni() +
-        "\nNombre: " + this.getNombre() + ", Teléfono: " + this.getTelefono() +
-        "\nEmail: " + this.getEmail();
+        return "Cliente{" +
+                "idCliente=" + idCliente +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", email='" + email + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", fechaRegistro='" + fechaRegistro + '\'' +
+                '}';
     }
+
 }
