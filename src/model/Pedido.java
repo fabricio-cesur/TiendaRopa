@@ -1,5 +1,5 @@
 package model;
-
+//Clase para hacer pedidos de clientes
 import java.util.ArrayList;
 
 public class Pedido {
