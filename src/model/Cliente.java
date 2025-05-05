@@ -35,7 +35,7 @@ public class Cliente {
     @Override
     public String toString() {
         return "Cliente{" +
-                "idCliente=" + idCliente.getId() +
+                "idCliente=" + idCliente.getUserId() +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", email='" + email + '\'' +
