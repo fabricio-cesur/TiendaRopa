@@ -90,8 +90,10 @@ public class ClienteDAO {
 
     
     public List<Cliente> obtenerTodos() {
+        
          Connection conexion = ConexionDB.conectar();
          List<Cliente> clientes = new ArrayList<>();
+         
         if (conexion != null) {
             String query = "SELECT * FROM clientes"; 
             try (Statement stmt = conexion.createStatement(); 
