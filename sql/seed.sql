@@ -96,4 +96,4 @@ CREATE TABLE Carrito (
     cantidad INT,
     FOREIGN KEY (idCliente) REFERENCES Clientes(idCliente),
     FOREIGN KEY (idProducto) REFERENCES Productos(idProducto)
-)
+);

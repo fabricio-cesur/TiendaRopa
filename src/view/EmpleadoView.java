@@ -1,4 +1,4 @@
-package vista;
+package view;
 
 import dao.EmpleadoDAO;
 import java.util.List;
@@ -25,7 +25,7 @@ public class EmpleadoView {
                 System.out.println("Introduce nombre:");
                 String nombre = sc.nextLine();
                 System.out.println("Introduce apellido:");
-                String apellido = sc.nextLine();
+                String apellido = sc.nextLine(); 
                 System.out.println("Introduce DNI:");
                 String dni = sc.nextLine();
                 System.out.println("Introduce puesto:");
@@ -81,7 +81,7 @@ public class EmpleadoView {
                     if (!nuevoSalarioStr.isEmpty()) {
                         try {
                             double nuevoSalario = Double.parseDouble(nuevoSalarioStr);
-                            empleadoExistente.setSaldo(nuevoSalario);
+                            empleadoExistente.setSalario(nuevoSalario);
                         } catch (NumberFormatException e) {
                             System.out.println("Salario no válido, se mantiene el valor anterior.");
                         }
