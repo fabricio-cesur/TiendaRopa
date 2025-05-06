@@ -17,17 +17,7 @@ CREATE TABLE Cliente (
     direccion VARCHAR(255),
     telefono VARCHAR(20)
 );
-CREATE TABLE empleados (
-    id_empleado INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    apellido VARCHAR(100) NOT NULL,
-    dni VARCHAR(20) UNIQUE,
-    cargo VARCHAR(100),
-    salario DECIMAL(10, 2),
-    telefono VARCHAR(20),
-    email VARCHAR(100)
-); 
-CREATE TABLE Descuento (
+ CREATE TABLE Descuento (
     idDescuento INT AUTO_INCREMENT PRIMARY KEY,
     descripcion TEXT,
     porcentaje_fija BOOLEAN NOT NULL,
@@ -53,21 +43,6 @@ CREATE TABLE User (
     password VARCHAR(255) NOT NULL,
     admin BOOLEAN NOT NULL
 );
-CREATE TABLE  Cajas (
-    id_caja INT AUTO_INCREMENT PRIMARY KEY,
-    fecha_cierre DATE UNIQUE,
-    saldo_inicial DECIMAL(10, 2),
-    gastos DECIMAL(10, 2),
-    saldo_total DECIMAL(10, 2)
-);
-CREATE TABLE Proveedores (
-    id_proveedor INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_empresa VARCHAR(255) NOT NULL,
-    cif VARCHAR(20) UNIQUE,
-    direccion VARCHAR(255),
-    telefono_contacto VARCHAR(20),
-    email_contacto VARCHAR(100)
-);
 CREATE TABLE DetallePedido (
     idDetallePedido INT AUTO_INCREMENT PRIMARY KEY,
     idPedido INT,
@@ -89,3 +64,7 @@ CREATE TABLE InventarioProducto (
     FOREIGN KEY (idInventario) REFERENCES Inventario(idInventario),
     FOREIGN KEY (idProducto) REFERENCES Productos(idProducto)
 );
+
+
+
+
