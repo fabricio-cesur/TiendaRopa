@@ -9,7 +9,7 @@ CREATE TABLE Productos (
     marca VARCHAR(100) NOT NULL,
     categoria VARCHAR(100) NOT NULL
 );
-CREATE TABLE Cliente (
+CREATE TABLE Clientes (
     idCliente INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     apellido VARCHAR(255) NOT NULL,
@@ -17,17 +17,17 @@ CREATE TABLE Cliente (
     direccion VARCHAR(255),
     telefono VARCHAR(20)
 );
- CREATE TABLE Descuento (
+ CREATE TABLE Descuentos (
     idDescuento INT AUTO_INCREMENT PRIMARY KEY,
     descripcion TEXT,
     porcentaje_fija BOOLEAN NOT NULL,
     porcentaje DECIMAL(5, 2),
     cantidad_fija DECIMAL(10, 2)
 );
-CREATE TABLE Inventario (
+CREATE TABLE Inventarios (
     idInventario INT AUTO_INCREMENT PRIMARY KEY
 );
-CREATE TABLE Pedido (
+CREATE TABLE Pedidos (
     idPedido INT AUTO_INCREMENT PRIMARY KEY,
     idCliente INT,
     fechaPedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -64,7 +64,14 @@ CREATE TABLE InventarioProducto (
     FOREIGN KEY (idInventario) REFERENCES Inventario(idInventario),
     FOREIGN KEY (idProducto) REFERENCES Productos(idProducto)
 );
-
+CREATE TABLE Carrito (
+    idCarrito INT AUTO_INCREMENT PRIMARY KEY,
+    idCliente INT,
+    idProducto INT,
+    cantidad INT,
+    FOREIGN KEY (idCliente) REFERENCES Clientes(idCliente),
+    FOREIGN KEY (idProducto) REFERENCES Productos(idProducto)
+)
 
 
 
