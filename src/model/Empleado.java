@@ -6,28 +6,28 @@ private String nombre;
 private String apellido;
 private String dni;
 private String cargo;
-private double saldo;
+private double salario;
 private String telefono;
 private String email;
 
    
     
-public Empleado(String nombre, String apellido, String dni, String cargo, double saldo,String telefono,String email) {
+public Empleado(String nombre, String apellido, String dni, String cargo, double salario,String telefono,String email) {
     this.nombre = nombre;
     this.apellido = apellido;
     this.dni = dni;
     this.cargo = cargo;
-    this.saldo = saldo;
+    this.salario = salario;
     this.telefono=telefono;
     this.email=email;
 }
-public Empleado(int id,String nombre, String apellido, String dni, String cargo, double saldo,String telefono,String email) {
+public Empleado(int id,String nombre, String apellido, String dni, String cargo, double salario,String telefono,String email) {
     this.id=id;
     this.nombre = nombre;
     this.apellido = apellido;
     this.dni = dni;
     this.cargo = cargo;
-    this.saldo = saldo;
+    this.salario = salario;
     this.telefono=telefono;
     this.email=email;
 }
@@ -73,12 +73,12 @@ public Empleado(int id,String nombre, String apellido, String dni, String cargo,
         this.cargo = cargo;
     }
 
-    public double getSaldo() {
-        return saldo;
+    public double getSalario() {
+        return salario;
     }
 
-    public void setSaldo(double Saldo) {
-        this.saldo = Saldo;
+    public void setSalario(double Salario) {
+        this.salario = Salario;
     }
 
     public String getTelefono() {
@@ -100,7 +100,7 @@ public Empleado(int id,String nombre, String apellido, String dni, String cargo,
     @Override
     public String toString() {
         return "Empleado [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", cargo="
-                + cargo + ", Saldo=" + saldo + ", telefono=" + telefono + ", email=" + email + "]";
+                + cargo + ", Salario=" + salario + ", telefono=" + telefono + ", email=" + email + "]";
     }
 }  
      

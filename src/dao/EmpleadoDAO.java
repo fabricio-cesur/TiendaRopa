@@ -12,13 +12,13 @@ public class EmpleadoDAO {
         try {
             Connection conexion = ConexionDB.conectar();
             if (conexion != null) {
-                String query = "INSERT INTO Empleado (Nombre, apellido, dni, puesto, saldo, telefono, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String query = "INSERT INTO Empleados (nombre, apellido, dni, cargo, salario, telefono, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement stmt = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 stmt.setString(1, empleado.getNombre());
                 stmt.setString(2, empleado.getApellido());
                 stmt.setString(3, empleado.getDni());
                 stmt.setString(4, empleado.getCargo());
-                stmt.setDouble(5, empleado.getSaldo());
+                stmt.setDouble(5, empleado.getSalario());
                 stmt.setString(6, empleado.getTelefono());
                 stmt.setString(7, empleado.getEmail());
     
@@ -44,7 +44,7 @@ public class EmpleadoDAO {
             List<Empleado> listaEmpleados = new ArrayList<>();
             Connection conexion = ConexionDB.conectar();
             if (conexion != null) {
-                String query = "SELECT id, Nombre, apellido, dni, cargo, saldo, telefono, email FROM Empleado";
+                String query = "SELECT idEmpleado, nombre, apellido, dni, cargo, salario, telefono, email FROM Empleados";
                 Statement stmt = conexion.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 while (rs.next()) {
@@ -54,7 +54,7 @@ public class EmpleadoDAO {
                             rs.getString("apellido"),
                             rs.getString("dni"),
                             rs.getString("cargo"),
-                            rs.getDouble("saldo"),
+                            rs.getDouble("salario"),
                             rs.getString("telefono"),
                             rs.getString("email")
                     );
@@ -75,7 +75,7 @@ public class EmpleadoDAO {
         try {
             Connection conexion = ConexionDB.conectar();
             if (conexion != null) {
-                String query = "SELECT id, Nombre, apellido, dni, cargo, saldo, telefono, email FROM Empleado WHERE id = ?";
+                String query = "SELECT id, Nombre, apellido, dni, cargo, salario, telefono, email FROM Empleado WHERE id = ?";
                 PreparedStatement stmt = conexion.prepareStatement(query);
                 stmt.setInt(1, id);
                 ResultSet rs = stmt.executeQuery();
@@ -86,7 +86,7 @@ public class EmpleadoDAO {
                             rs.getString("apellido"),
                             rs.getString("dni"),
                             rs.getString("cargo"),
-                            rs.getDouble("saldo"),
+                            rs.getDouble("salario"),
                             rs.getString("telefono"),
                             rs.getString("email")
                     );
@@ -107,13 +107,13 @@ public class EmpleadoDAO {
         try {
             Connection conexion = ConexionDB.conectar();
             if (conexion != null) {
-                String query = "UPDATE Empleado SET Nombre = ?, apellido = ?, dni = ?, cargo = ?, saldo = ?, telefono = ?, email = ? WHERE id = ?";
+                String query = "UPDATE Empleado SET Nombre = ?, apellido = ?, dni = ?, cargo = ?, salario = ?, telefono = ?, email = ? WHERE id = ?";
                 PreparedStatement stmt = conexion.prepareStatement(query);
                 stmt.setString(1, empleado.getNombre());
                 stmt.setString(2, empleado.getApellido());
                 stmt.setString(3, empleado.getDni());
                 stmt.setString(4, empleado.getCargo());
-                stmt.setDouble(5, empleado.getSaldo());
+                stmt.setDouble(5, empleado.getSalario());
                 stmt.setString(6, empleado.getTelefono());
                 stmt.setString(7, empleado.getEmail());
                 stmt.setInt(8, empleado.getId());
