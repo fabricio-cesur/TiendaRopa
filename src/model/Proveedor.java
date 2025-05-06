@@ -7,7 +7,7 @@ public class Proveedor {
     private String direccion;
     private String numero;
     private String email;
-    private String productos; //No sé aún cómo se hará una lista en la base de datos
+    private String productos; 
     private String cuenta;
     
     //Constructor

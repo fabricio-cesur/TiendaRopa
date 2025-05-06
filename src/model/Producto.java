@@ -1,5 +1,4 @@
 package model;
-
 public class Producto {
     //Atributos
     private String id;
