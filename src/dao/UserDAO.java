@@ -12,16 +12,14 @@ public class UserDAO {
     public void insertarUser(User user) {
         String username = user.getUsername();
         String password = user.getPassword();
-        boolean admin = user.isAdmin();
 
         Connection conexion = ConexionDB.conectar();
 
         if(conexion != null) {
-            String query = "INSERT INTO User (username, password, admin) VALUES (?, ?, ?)";
+            String query = "INSERT INTO User (username, password) VALUES (?, ?)";
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setString(1, username);
                 ps.setString(2, password);
-                ps.setBoolean(3, admin);
                 ps.executeUpdate();
 
             } catch (SQLException e) {
@@ -57,11 +55,13 @@ public class UserDAO {
             try (Statement stmt = conexion.createStatement();
             ResultSet rs = stmt.executeQuery(query)) {
                 while (rs.next()) {
+                    int id = rs.getInt("id");
                     String username = rs.getString("username");
                     String password = rs.getString("password");
-                    boolean admin = rs.getBoolean("admin");
+                    String role = rs.getString("role");
 
-                    User user = new User(username, password, admin);
+                    User user = new User(username, password, role);
+                    user.setId(id);
                     users.add(user);
                 }
             } catch (SQLException e) {
@@ -85,9 +85,8 @@ public class UserDAO {
                     if (rs.next()) {
                         String username = rs.getString("username");
                         String password = rs.getString("password");
-                        boolean admin = rs.getBoolean("admin");
                         
-                        user = new User(username, password, admin);
+                        user = new User(username, password, "user");
                     }
                 }
             } catch (SQLException e) {
@@ -111,9 +110,8 @@ public class UserDAO {
                     if (rs.next()) {
                         String username1 = rs.getString("username");
                         String password = rs.getString("password");
-                        boolean admin = rs.getBoolean("admin");
                         
-                        user = new User(username1, password, admin);
+                        user = new User(username1, password, "user");
                     }
                 }
             } catch (SQLException e) {
@@ -209,23 +207,15 @@ public class UserDAO {
                     if (rs.next()) {
                         String username = rs.getString("username");
                         String password = rs.getString("password");
-                        boolean admin = rs.getBoolean("admin");
-
-                        user = new User(username, password, admin);
+                        user = new User(username, password, "user");
+                        return user;
                     }
                 }
             } catch (SQLException e) {
                 System.err.println("Error al iniciar sesión: " + e.getMessage());
             }
         }
-        return user;
-
+        return null;
     }
-    
-
-
-
-
-
 }
 

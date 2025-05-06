@@ -1,4 +1,6 @@
 import dao.ConexionDB;
+import dao.UserDAO;
+import java.awt.event.AdjustmentListener;
 import java.sql.Connection;
 import java.util.Scanner;
 import view.VentaView;
@@ -7,13 +9,14 @@ import view.UserView;
 public class App {
     public static void main(String[] args) throws Exception {
         Connection conexion = ConexionDB.conectar();
-        ClienteView cliente = new ClienteView();
+        ClienteView clienteView = new ClienteView();
         VentaView venta = new VentaView();
-        UserView user = new UserView();
+        UserView userView = new UserView();
+        UserDAO userDAO = new UserDAO();
         
         //Establecer dependencias
-        cliente.setVentaView(venta);
-        venta.setClienteView(cliente);
+        clienteView.setVentaView(venta);
+        venta.setClienteView(clienteView);
 
         Scanner sc = new Scanner(System.in);
 
@@ -38,12 +41,8 @@ public class App {
             sc.nextLine(); // Limpiar el buffer
 
             switch (opcion) {
-                case 1 -> {
-                    user.iniciarSesion();
-                }
-                case 2 -> {
-                    user.registrarUser();
-                }
+                case 1 -> userView.iniciarSesion();
+                case 2 -> userView.registrarUser();
                 case 3 -> System.out.println("Saliendo...");
                 default -> System.out.println("Opción no válida. Intente de nuevo.");
             }

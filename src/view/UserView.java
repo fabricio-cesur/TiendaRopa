@@ -2,10 +2,12 @@ package view;
 
 import dao.UserDAO;
 import dao.ClienteDAO;
+import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.User;
 import model.Cliente;
+import model.Pedido;
 
 public class UserView {
 
@@ -14,11 +16,12 @@ public class UserView {
     private ArrayList<Cliente> clientes = new ArrayList<>();
     private UserDAO userDAO = new UserDAO();
     private ArrayList<User> users = new ArrayList<>();
+    private AdminView admin = new AdminView();
 
     String usuario = "tienda";
     String passwd = "GestorTiendaRopa8743";
-    String usuarioEntrada;
-    String passwdEntrada;
+    String userEntrada;
+    String passwordEntrada;
 
     public UserView() {}
 
@@ -32,26 +35,39 @@ public class UserView {
 
     }
 
-    public User iniciarSesion() {
-        User user = null;
-        System.out.println("Iniciar sesion");
+    public void iniciarSesion() {
+        boolean sesionIniciada = false;
+        do { 
+            System.out.println("Iniciar sesión");
         System.out.println("------------------");
-        System.out.println("Introduce el nombre de usuario: ");
-        usuarioEntrada = sc.nextLine();
-        System.out.println("Introduce la contraseña: ");
-        passwdEntrada = sc.nextLine();
-        userDAO.inicioSesion(usuarioEntrada, passwdEntrada);
+        System.out.print("Introduce el nombre de usuario: ");
+        userEntrada = sc.nextLine();
+        System.out.print("Introduce la contraseña: ");
+        passwordEntrada = sc.nextLine();
 
-        if (usuarioEntrada.equals(usuario) && passwdEntrada.equals(passwd) && user.isAdmin()) {
-            System.out.println("Hola admin (º ͜ʖº)/ ");
+        User user = userDAO.inicioSesion(userEntrada, passwordEntrada);
+
+        if (user != null) {
+            if (user.getRole().equals("admin")) {
+                System.out.println("Inicio de sesión exitoso. Bienvenido, " + user.getUsername() + "!");
+                admin.menuAdmin(user); // Llama al menú del administrador
+                sesionIniciada = true; // Cambia el estado de la sesión a iniciada
+            }
+            else {
+                System.out.println("Inicio de sesión exitoso. Bienvenido, " + user.getUsername() + "!");
+                menuUser(user); // Llama al menú del usuario
+                sesionIniciada = true; // Cambia el estado de la sesión a iniciada
+            }
+            
+        } else {
+            System.out.println("Usuario o contraseña incorrectos. Intente de nuevo.");
         }
+        } while (!sesionIniciada);
         
-        return user;
-
     }
 
     public void registrarUser() {
-        System.out.println("Registrase");
+        System.out.println("Registrarse");
         System.out.println("------------------");
         System.out.println("Introduce el nombre de usuario: ");
         String username = sc.nextLine();
@@ -67,7 +83,7 @@ public class UserView {
         String email = sc.nextLine();
         System.out.println("Introduce su nº de telefono");
         String telefono = sc.nextLine();
-        User user = new User(username, password, false);
+        User user = new User(username, password, "user");
         userDAO.insertarUser(user);
         users.add(user);
         Cliente cliente = new Cliente(nombre, apellido, email, telefono);
@@ -75,63 +91,23 @@ public class UserView {
         clientes.add(cliente);
     }
 
-    public User getUserId() {
-        System.out.println("Introduce el id del usuario: ");
-        int id = sc.nextInt();
-        sc.nextLine(); // Limpiar el buffer
-        User user = userDAO.getUserId(id);
-        return user;
-    }
-
-    public User getUsername() {
-        System.out.println("Introduce el nombre de usuario: ");
-        String username = sc.nextLine();
-        sc.nextLine(); // Limpiar el buffer
-        User user = userDAO.getUsername(username);
-        return user;
-
-    }
-
-    public User getPassword() {
-        System.out.println("Introduce la contraseña: ");
-        String password = sc.nextLine();
-        sc.nextLine(); // Limpiar el buffer
-        User user = userDAO.getUsername(password);
-        return user;
-    }
 
     public void menuUser(User user) {
         int opcion;
         do {
-            System.out.println("Menu de usuario");
+            System.out.println("Bienvenido, " + user.getUsername() + "!");
             System.out.println("------------------");
-            System.out.println("1. Actualizar nombre de usuario");
-            System.out.println("2. Actualizar contraseña");
-            System.out.println("3. Listar clientes");
-            System.out.println("4. Salir");
+            System.out.println("1. Pedidos");
+            System.out.println("2. Ver productos");
+            System.out.println("3. Ver descuentos");
+            System.out.println("4. Modificar usuario");
+            System.out.println("5. Salir");
             System.out.print("Seleccione una opción: ");
             opcion = sc.nextInt();
             sc.nextLine(); // Limpiar el buffer
 
             switch (opcion) {
-                case 1 -> {
-                    System.out.println("Introduce el nuevo nombre de usuario: ");
-                    String username = sc.nextLine();
-                    userDAO.actualizarUsernameUser(user.getUserId(), username);
-                }
-                case 2 -> {
-                    System.out.println("Introduce la nueva contraseña: ");
-                    String password = sc.nextLine();
-                    userDAO.actualizarPasswordUser(user.getUserId(), password);
-                }
-                case 3 -> {
-                    clientes = clienteDAO.listarClientes();
-                    for (Cliente cliente : clientes) {
-                        System.out.println(cliente.toString());
-                    }
-                }
-                case 4 -> System.out.println("Saliendo...");
-                default -> System.out.println("Opción no válida. Intente de nuevo.");
+                case 1 -> //pedido.hacerPedido();
             }
 
         } while (opcion != 4);
