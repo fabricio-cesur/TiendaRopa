@@ -2,7 +2,7 @@ package model;
 
 public class Cliente {
     //Atributos
-    private String id;
+    private int id;
     private String dni;
     private String nombre;
     private String telefono;
@@ -17,13 +17,13 @@ public class Cliente {
     }
 
     //Getters
-    public String getId() { return this.id; }
+    public int getId() { return this.id; }
     public String getDni() { return this.dni; }
     public String getNombre() { return this.nombre; }
     public String getTelefono() { return this.telefono; }
     public String getEmail() { return this.email; }
     //Setters
-    public void setId(String id) { this.id = id; }
+    public void setId(int id) { this.id = id; }
     public void setDni(String dni) { this.dni = dni; }
     public void setNombre(String nombre) { this.nombre = nombre; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
