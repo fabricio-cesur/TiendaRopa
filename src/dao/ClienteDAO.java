@@ -100,14 +100,14 @@ public class ClienteDAO {
                 ResultSet rs = stmt.executeQuery(query)) {
             
                 while (rs.next()) {
-                    Cliente cliente = new Cliente();
+                    Cliente cliente = new Cliente(
+                        rs.getString("dni"),
+                        rs.getString("nombre"),
+                        rs.getString("telefono"),
+                        rs.getString("email")
+                    );
                     cliente.setId(rs.getInt("id"));
-                    cliente.setNombre(rs.getString("nombre"));
-                    cliente.setTelefono(rs.getString("telefono"));
-                    cliente.setEmail(rs.getString("email"));
-                    cliente.setDni(rs.getString("dni"));
                     clientes.add(cliente);
-                    
                 }
             } catch (SQLException e) {
             System.out.println("Error al realizar la consulta: " + e.getMessage());
