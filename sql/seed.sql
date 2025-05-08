@@ -96,4 +96,44 @@ CREATE TABLE Carrito (
     cantidad INT,
     FOREIGN KEY (idCliente) REFERENCES Clientes(idCliente),
     FOREIGN KEY (idProducto) REFERENCES Productos(idProducto)
-);
+
+
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `tienda`@`%` 
+    SQL SECURITY DEFINER
+VIEW `ProductosMasRentables` AS
+    SELECT 
+        `p`.`idProducto` AS `idProducto`,
+        `p`.`nombre` AS `nombre`,
+        SUM(`dp`.`cantidad` * `dp`.`precioUnitario`) AS `total_revenue`
+    FROM
+        (`Productos` `p`
+        JOIN `DetallePedido` `dp` ON (`p`.`idProducto` = `dp`.`idProducto`))
+    GROUP BY `p`.`idProducto` , `p`.`nombre`
+    ORDER BY SUM(`dp`.`cantidad` * `dp`.`precioUnitario`) DESC
+
+
+
+CREATE DEFINER=`tienda`@`%` PROCEDURE `ReducirStockVenta`(IN p_idProducto INT,
+    IN p_cantidadVendida INT)
+BEGIN
+	 DECLARE stockActual INT;
+    DECLARE cantidad_incorrecta CONDITION FOR SQLSTATE '45000';
+    SELECT stock INTO stockActual FROM Productos WHERE idProducto = p_idProducto;
+    IF stockActual < p_cantidadVendida THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Cantidad vendida excede el stock disponible';
+    ELSE
+        UPDATE Productos
+        SET stock = stock - p_cantidadVendida
+        WHERE idProducto = p_idProducto;
+    END IF;
+END
+
+CREATE DEFINER=`tienda`@`%` TRIGGER `tienda`.`logProductos` BEFORE DELETE ON `Productos` FOR EACH ROW
+BEGIN
+INSERT INTO LogProductos (idProducto, nombre, descripcion, precio, stock, talla, color, marca, categoria)
+    VALUES (OLD.idProducto, OLD.nombre, OLD.descripcion, OLD.precio, OLD.stock, OLD.talla, OLD.color, OLD.marca, OLD.categoria);
+END
+
