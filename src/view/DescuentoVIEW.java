@@ -1,17 +1,18 @@
 package view;
 
-import java.util.List;
-import java.util.Scanner;
+import dao.DescuentoDAO;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.Scanner;
 import model.Descuento;
-import dao.DescuentoDAO;
 
-public class DescuentoVIEW {
+public class DescuentoVIEW {    
 private DescuentoDAO descuentoDAO = new DescuentoDAO();
 
     public void menuDescuento() {
+
         int opcionDescuentos;
         do { 
             System.out.println("¿Qué acción deseas realizar?");
@@ -51,16 +52,18 @@ private DescuentoDAO descuentoDAO = new DescuentoDAO();
 
         } while (opcionDescuentos != 0);
     }
+
     Scanner sc = new Scanner(System.in);
 
     private void listarDescuentos() {
         List<Descuento> lista = descuentoDAO.obtenerTodos();
         for (Descuento c : lista) {
             System.out.println(c);
-        }
+        }        
     }
 
     private void buscarDescuentos() {
+
         System.out.println("Introduce el nombre del descuento que deseas buscar:");
         String nombre = sc.next();
 
@@ -76,10 +79,12 @@ private DescuentoDAO descuentoDAO = new DescuentoDAO();
     }
 
     private void agregarDescuentos() {
+
         System.out.println("Introduce los datos del nuevo descuento:");
 
         System.out.println("Introduce el nombre del descuento. Puede ser, por ejemplo, la temporada a la que pertenece");
         String nombre = sc.nextLine();
+
         System.out.println("Añade una descripción del descuento");
         String descripcion = sc.nextLine();
 
@@ -90,6 +95,7 @@ private DescuentoDAO descuentoDAO = new DescuentoDAO();
         LocalDate fechaInicio = null;
         boolean fechaInicioValida = false;
         while (!fechaInicioValida) {
+
             System.out.println("Ingresa la fecha de inicio (formato YYYY-MM-DD):");
             String fechaInicioStr = sc.nextLine();
             try {
@@ -98,11 +104,13 @@ private DescuentoDAO descuentoDAO = new DescuentoDAO();
             } catch (DateTimeParseException e) {
                 System.out.println("Formato de fecha incorrecto. Por favor, usa el formato YYYY-MM-DD.");
             }
+
         }
 
         LocalDate fechaFin = null;
         boolean fechaFinValida = false;
         while (!fechaFinValida) {
+
             System.out.println("Ingresa la fecha de fin (formato YYYY-MM-DD):");
             String fechaFinStr = sc.nextLine();
             try {
@@ -111,9 +119,10 @@ private DescuentoDAO descuentoDAO = new DescuentoDAO();
             } catch (DateTimeParseException e) {
                 System.out.println("Formato de fecha incorrecto. Por favor, usa el formato YYYY-MM-DD.");
             }
+
         }
 
-        Descuento nuevoDescuento = new Descuento(nombre, descripcion, porcentajeDescuento, fechaInicio, fechaFin);
+        Descuento nuevoDescuento = new Descuento(nombre, descripcion, porcentajeDescuento, fechaInicio , fechaFin);
 
         descuentoDAO.insertar(nuevoDescuento);
         System.out.println("Descuento agregado correctamente.");
@@ -121,6 +130,7 @@ private DescuentoDAO descuentoDAO = new DescuentoDAO();
     }
 
     private void actualizarDescuentos() {
+
         System.out.println("Introduce el nombre del descuento que deseas actualizar:");
         String nombre = sc.nextLine();
         Descuento descuento = descuentoDAO.buscarPorNombre(nombre);

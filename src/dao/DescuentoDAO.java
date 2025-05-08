@@ -2,7 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.time.LocalDate;
+//import java.time.LocalDate;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,7 +77,8 @@ public class DescuentoDAO {
                 stmt.setString(1, nombre);  
                 ResultSet rs = stmt.executeQuery();
                     if (rs.next()) {
-                        
+                
+                         
                         Descuento descuento = new Descuento(
                             rs.getString("nombre"),
                             rs.getString("descripcion"),
