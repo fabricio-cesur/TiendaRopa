@@ -37,14 +37,14 @@ public class ProductoDAO {
     
     //Método para actualizar un producto en la BDD
     //En lugar de actualizar todo el objeto, sólo actualiza la columna que se requiera
-    public boolean actualizar(String columna, String valor, String id) {
+    public boolean actualizar(String columna, String valor, int id) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
             String query = "UPDATE Productos SET ? = ? WHERE id = ?";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                 stmt.setString(1, columna);
                 stmt.setString(2, valor);
-                stmt.setString(3, id);
+                stmt.setInt(3, id);
                 
                 return stmt.executeUpdate() == 1;
             } catch (SQLException e) {
@@ -64,7 +64,7 @@ public class ProductoDAO {
             Producto producto = null;
             String query = "SELECT * FROM Productos WHERE idProducto = ?";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                stmt.setInt(3, id);
+                stmt.setInt(1, id);
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     producto = new Producto(
