@@ -1,6 +1,6 @@
 package model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class Descuento {
     //Atributos
@@ -8,10 +8,10 @@ public class Descuento {
     private double porcentajeDescuento; // % descuento
     private String nombre; // Nombre del descuento
     private String descripcion; // Descripción del descuento
-    private LocalDate fechaInicio; // Fecha de inicio del descuento
-    private LocalDate fechaFin; // Fecha de fin de descuento
+    private Date fechaInicio; // Fecha de inicio del descuento
+    private Date fechaFin; // Fecha de fin de descuento
 
-    public Descuento(double porcentajeDescuento, String nombre, String descripcion, LocalDate fechaInicio, LocalDate fechaFin) {
+    public Descuento(double porcentajeDescuento, String nombre, String descripcion, Date fechaInicio, Date fechaFin) {
         this.porcentajeDescuento = porcentajeDescuento;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -50,19 +50,19 @@ public class Descuento {
         this.descripcion = descripcion;
     }
 
-    public LocalDate getFechaInicio() {
+    public Date getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(LocalDate fechaInicio) {
+    public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public LocalDate getFechaFin() {
+    public Date getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(LocalDate fechaFin) {
+    public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
     }
 
