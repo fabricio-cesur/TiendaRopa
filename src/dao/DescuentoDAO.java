@@ -21,8 +21,8 @@ public class DescuentoDAO {
                 stmt.setString(1, descuento.getNombre()); 
                 stmt.setString(2, descuento.getDescripcion()); 
                 stmt.setDouble(3, descuento.getPorcentajeDescuento());
-                stmt.setDate(4, Date.valueOf(descuento.getFechaInicio()));
-                stmt.setDate(5, Date.valueOf(descuento.getFechaFin()));
+                stmt.setDate(4, descuento.getFechaInicio());
+                stmt.setDate(5, descuento.getFechaFin());
                 stmt.executeUpdate(); 
                 System.out.println("Descuento agregado correctamente.");
             } catch (SQLException e) {
@@ -43,7 +43,7 @@ public class DescuentoDAO {
 
                 System.out.println("Datos actualizados para el descuento llamado: " + descuento.getNombre());
             } catch (SQLException e) {
-                System.out.println("Error al actualizar el descuento con nombre: " + e.getNombre());
+                System.out.println("Error al actualizar el descuento con nombre: " + e.getMessage());
             }
 
         }
@@ -76,9 +76,9 @@ public class DescuentoDAO {
                 ResultSet rs = stmt.executeQuery();
                     if (rs.next()) {
                         Descuento descuento = new Descuento(
-                            rs.getString("nombre"),
-                            rs.getString("descripcion"),
                             rs.getDouble("porcentajeDescuento"),
+                            rs.getString("descripcion"),
+                            rs.getString("nombre"),
                             rs.getDate("fechaInicio"),
                             rs.getDate("fechaFin")
                         );                        
@@ -106,12 +106,12 @@ public class DescuentoDAO {
             
                 while (rs.next()) {
                     Descuento descuento = new Descuento();
-                    descuento.setId(rs.getInt("id"));
+                    descuento.setIdDescuento(rs.getInt("idDescuento"));
                     descuento.setNombre(rs.getString("nombre"));
                     descuento.setDescripcion(rs.getString("descripcion"));
                     descuento.setPorcentajeDescuento(rs.getDouble("porcentajeDescuento"));
                     descuento.setFechaInicio(rs.getDate("fechaInicio"));
-                    descuento.setFechaFin(rs.getDate("FechaFin"));
+                    descuento.setFechaFin(rs.getDate("fechaFin"));
                     descuentos.add(descuento);
                     
                 }
