@@ -217,5 +217,26 @@ public class UserDAO {
         }
         return null;
     }
+
+    public void modificarRol(User user) {
+        int id = user.getUserId();
+        String rol = user.getRole();
+        Connection conexion = ConexionDB.conectar();
+
+        if (conexion != null) {
+            String query = "UPDATE User SET role = ? WHERE id = ?";
+
+            try (PreparedStatement ps = conexion.prepareStatement(query)) {
+                ps.setString(1, rol);
+                ps.setInt(2, id);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                System.err.println("Error al modificar el rol del usuario: " + e.getMessage());
+            }
+        }
+    }
+
+
+    
 }
 
