@@ -106,6 +106,20 @@ BEGIN
     END IF;
 END
 
+
+CREATE TABLE LogProductos (
+    idProducto INT,
+    nombre VARCHAR(255),
+    descripcion TEXT,
+    precio DECIMAL(10, 2),
+    stock INT UNSIGNED,
+    talla VARCHAR(50),
+    color VARCHAR(50),
+    marca VARCHAR(100),
+    categoria VARCHAR(100),
+    fechaEliminacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE DEFINER=`tienda`@`%` TRIGGER `tienda`.`logProductos` BEFORE DELETE ON `Productos` FOR EACH ROW
 BEGIN
 INSERT INTO LogProductos (idProducto, nombre, descripcion, precio, stock, talla, color, marca, categoria)
