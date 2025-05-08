@@ -6,15 +6,13 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import dao.UserDAO;
 import dao.ClienteDAO;
-import model.Producto;
-
 
 public class AdminView {
     private Scanner sc = new Scanner(System.in);
     private UserDAO userDAO = new UserDAO();
     private ClienteDAO clienteDAO = new ClienteDAO();
     private ProductoView producto = new ProductoView();
-    private PedidoView pedidos = new PedidoView();
+    private PedidoView pedido = new PedidoView();
 
     public void menuAdmin(User user) {
         int opcion;

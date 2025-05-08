@@ -2,12 +2,12 @@ package view;
 
 import dao.UserDAO;
 import dao.ClienteDAO;
-import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.User;
 import model.Cliente;
 import model.Pedido;
+import model.Producto;
 
 public class UserView {
 
@@ -17,6 +17,7 @@ public class UserView {
     private UserDAO userDAO = new UserDAO();
     private ArrayList<User> users = new ArrayList<>();
     private AdminView admin = new AdminView();
+    private PedidoView pedido = new PedidoView();
 
     String usuario = "tienda";
     String passwd = "GestorTiendaRopa8743";
@@ -99,15 +100,19 @@ public class UserView {
             System.out.println("------------------");
             System.out.println("1. Pedidos");
             System.out.println("2. Ver productos");
-            System.out.println("3. Ver descuentos");
-            System.out.println("4. Modificar usuario");
+            System.out.println("3. Modificar usuario");
+            System.out.println("4. Darse de baja");
             System.out.println("5. Salir");
             System.out.print("Seleccione una opción: ");
             opcion = sc.nextInt();
             sc.nextLine(); // Limpiar el buffer
 
             switch (opcion) {
-                case 1 -> //pedido.hacerPedido();
+                case 1 -> pedido.gestionPedidos();
+                case 2 -> producto.gestionProductos();
+                case 3 -> user.modificarUser();
+                case 4 -> eliminarUser();
+                
             }
 
         } while (opcion != 4);
@@ -120,5 +125,7 @@ public class UserView {
             System.out.println(user.toString());
         }
     }
+
+    
 
 }
