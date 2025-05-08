@@ -75,9 +75,12 @@ public class DescuentoDAO {
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                 stmt.setString(1, nombre);  
                 ResultSet rs = stmt.executeQuery();
-                    if (rs.next()) {
-                
-                         
+                    if (rs.next()) {     
+                        
+            //          NI IDEA DE LO QUE ESTÁ PASANDO AQUÍ. PINTA SER PROBLEMA DEL "LOCAL DATE"
+            //          Y SOLO PERMITE HACERSE SI ES "DATE" (EN CASO DE USAR "DATE" NO PUEDO HACER CORRECTAMENTE "DescuentoVIEW")
+            //          MY TERCERA OPCION ES USAR "DATE" ÚNICAMENTE EN "fechaFin" Y QUIZÁ SEA ESA LA OPCIÓN PERO CREO QUE, SIMPLEMENTE, NO SE
+
                         Descuento descuento = new Descuento(
                             rs.getString("nombre"),
                             rs.getString("descripcion"),
