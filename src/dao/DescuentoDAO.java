@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,8 +22,8 @@ public class DescuentoDAO {
                 stmt.setString(1, descuento.getNombre()); 
                 stmt.setString(2, descuento.getDescripcion()); 
                 stmt.setDouble(3, descuento.getPorcentajeDescuento());
-                stmt.setDate(4, descuento.getFechaInicio());
-                stmt.setDate(5, descuento.getFechaFin());
+                stmt.setDate(4, Date.valueOf(descuento.getFechaInicio()));
+                stmt.setDate(5, Date.valueOf(descuento.getFechaFin()));
                 stmt.executeUpdate(); 
                 System.out.println("Descuento agregado correctamente.");
             } catch (SQLException e) {
@@ -68,6 +69,7 @@ public class DescuentoDAO {
 
     
     public Descuento buscarPorNombre(String nombre) {
+        
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
             String query = "SELECT * FROM descuento WHERE nombre = ?"; 
@@ -75,13 +77,14 @@ public class DescuentoDAO {
                 stmt.setString(1, nombre);  
                 ResultSet rs = stmt.executeQuery();
                     if (rs.next()) {
+                        
                         Descuento descuento = new Descuento(
-                            rs.getDouble("porcentajeDescuento"),
-                            rs.getString("descripcion"),
                             rs.getString("nombre"),
+                            rs.getString("descripcion"),
+                            rs.getDouble("porcentajeDescuento"),
                             rs.getDate("fechaInicio"),
                             rs.getDate("fechaFin")
-                        );                        
+                        );                       
                         return descuento;
                     } 
                                                             
@@ -112,7 +115,7 @@ public class DescuentoDAO {
                     descuento.setPorcentajeDescuento(rs.getDouble("porcentajeDescuento"));
                     descuento.setFechaInicio(rs.getDate("fechaInicio"));
                     descuento.setFechaFin(rs.getDate("fechaFin"));
-                    descuentos.add(descuento);
+                    descuento.add(descuento);
                     
                 }
             } catch (SQLException e) {
