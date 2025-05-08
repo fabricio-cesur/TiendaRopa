@@ -75,14 +75,14 @@ public class EmpleadoDAO {
         try {
             Connection conexion = ConexionDB.conectar();
             if (conexion != null) {
-                String query = "SELECT id, Nombre, apellido, dni, cargo, salario, telefono, email FROM Empleado WHERE id = ?";
+                String query = "SELECT id, nombre, apellido, dni, cargo, salario, telefono, email FROM Empleado WHERE id = ?";
                 PreparedStatement stmt = conexion.prepareStatement(query);
                 stmt.setInt(1, id);
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     Empleado empleado = new Empleado(
                             rs.getInt("id"),
-                            rs.getString("Nombre"),
+                            rs.getString("nombre"),
                             rs.getString("apellido"),
                             rs.getString("dni"),
                             rs.getString("cargo"),
