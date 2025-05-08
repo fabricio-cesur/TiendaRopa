@@ -73,5 +73,18 @@ CREATE TABLE Carrito (
     FOREIGN KEY (idProducto) REFERENCES Productos(idProducto)
 )
 
-
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `tienda`@`%` 
+    SQL SECURITY DEFINER
+VIEW `ProductosMasRentables` AS
+    SELECT 
+        `p`.`idProducto` AS `idProducto`,
+        `p`.`nombre` AS `nombre`,
+        SUM(`dp`.`cantidad` * `dp`.`precioUnitario`) AS `total_revenue`
+    FROM
+        (`Productos` `p`
+        JOIN `DetallePedido` `dp` ON (`p`.`idProducto` = `dp`.`idProducto`))
+    GROUP BY `p`.`idProducto` , `p`.`nombre`
+    ORDER BY SUM(`dp`.`cantidad` * `dp`.`precioUnitario`) DESC
 
