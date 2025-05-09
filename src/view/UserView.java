@@ -18,6 +18,7 @@ public class UserView {
     private ArrayList<User> users = new ArrayList<>();
     private AdminView admin = new AdminView();
     private PedidoView pedido = new PedidoView();
+    private ProductoView producto = new ProductoView();
 
     String usuario = "tienda";
     String passwd = "GestorTiendaRopa8743";
@@ -109,8 +110,8 @@ public class UserView {
 
             switch (opcion) {
                 case 1 -> pedido.gestionPedidos();
-                case 2 -> producto.gestionProductos();
-                case 3 -> user.modificarUser();
+                case 2 -> producto.verProductos();
+                case 3 -> modificarUser();
                 case 4 -> eliminarUser();
                 
             }
@@ -124,6 +125,75 @@ public class UserView {
         for (User user : users) {
             System.out.println(user.toString());
         }
+    }
+    
+    public User getUserId() {
+        System.out.println("Introduce el id del usuario: ");
+        int id = sc.nextInt();
+        sc.nextLine(); // Limpiar el buffer
+        User user = userDAO.getUserId(id);
+        return user;
+    }
+
+    public void modificarUser() {
+        User user = this.getUserId();
+        int idUser = user.getUserId();
+        int opcion;
+        do { 
+            System.out.println("Modificar usuario");
+            System.out.println("------------------");
+            System.out.println("1. Modificar nombre de usuario");
+            System.out.println("2. Modificar contraseña");
+            System.out.println("3. Modificar nombre");
+            System.out.println("4. Modificar apellido");
+            System.out.println("5. Modificar email");
+            System.out.println("6. Modificar dirección");
+            System.out.println("7. Modificar teléfono");
+            System.out.println("8. Volver al menú principal");
+            System.out.print("Seleccione una opción: ");
+            opcion = sc.nextInt();
+            sc.nextLine(); // Limpiar el buffer
+
+            switch (opcion) {
+                case 1 -> {
+                    System.out.println("Introduce el nuevo nombre de usuario: ");
+                    String nuevoNombre = sc.nextLine();
+                    userDAO.modificarNombre(id, nuevoNombre);
+                }
+                case 2 -> {
+                    System.out.println("Introduce la nueva contraseña: ");
+                    String nuevaPass = sc.nextLine();
+                    userDAO.modificarPass(id, nuevaPass);
+                }
+                case 3 -> {
+                    System.out.println("Introduce el nuevo nombre: ");
+                    String nuevoNombre = sc.nextLine();
+                    clienteDAO.modificarNombre(cliente, nuevoNombre);
+                }
+                case 4 -> {
+                    System.out.println("Introduce el nuevo apellido: ");
+                    String nuevoApellido = sc.nextLine();
+                    clienteDAO.modificarApellido(cliente, nuevoApellido);
+                }
+                case 5 -> {
+                    System.out.println("Introduce el nuevo email: ");
+                    String nuevoEmail = sc.nextLine();
+                    clienteDAO.modificarEmail(cliente, nuevoEmail);
+                }
+                case 6 -> {
+                    System.out.println("Introduce la nueva dirección: ");
+                    String nuevaDireccion = sc.nextLine();
+                    clienteDAO.modificarDireccion(cliente, nuevaDireccion);
+                }
+                case 7 -> {
+                    System.out.println("Introduce el nuevo teléfono: ");
+                    String nuevoTelefono = sc.nextLine();
+                    clienteDAO.modificarTelefono(cliente, nuevoTelefono);
+                }
+            }
+        } while (opcion != 8);
+        
+    
     }
 
     

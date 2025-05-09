@@ -149,4 +149,134 @@ public class ProductoView {
         int idProducto = sc.nextInt();
         return productoDAO.getProductoId(idProducto);
     }
+
+    public void verProductos() {
+        int opcion;
+        do { 
+            System.out.println("Productos disponibles");
+            System.out.println("1. Ver productos por categoría");
+            System.out.println("2. Ver productos por marca");
+            System.out.println("3. Ver productos por precio");
+            System.out.println("4. Ver productos por talla");
+            System.out.println("5. Ver productos por color");
+            System.out.println("6. Volver al menú principal");
+            System.out.print("Selecciona una opción: ");
+            opcion = sc.nextInt();
+            sc.nextLine(); // Limpiar el buffer
+
+            switch (opcion) {
+                case 1 -> listarProductosCategoria();
+                case 2 -> listarProductosMarca();
+                case 3 -> listarProductosPrecio();
+                case 4 -> listarProductosTalla();
+                case 5 -> listarProductosColor();
+                case 6 -> System.out.println("Volviendo al menú principal...");
+                default -> System.out.println("Opción no válida. Intente de nuevo.");
+            }
+        } while (opcion != 5);
+    }
+
+    public void listarProductosCategoria() {
+        System.out.println("Introduzca la categoría del producto: ");
+        String categoria = sc.nextLine().trim(); // Elimina espacios en blanco al inicio y al final
+
+        if (categoria.isEmpty()) {
+            System.out.println("La categoría no puede estar vacía. Intente de nuevo.");
+            return;
+        }
+
+        ArrayList<Producto> productos = productoDAO.listarProductosCategoria(categoria);
+
+        if (productos.isEmpty()) {
+            System.out.println("No se encontraron productos en la categoría: " + categoria);
+        } else {
+            System.out.println("Lista de productos de la categoría '" + categoria + "':");
+            for (Producto producto : productos) {
+                System.out.println(producto.toString());
+            }
+        }
+    }
+
+    public void listarProductosMarca() {
+        System.out.println("Introduzca la marca del producto: ");
+        String marca = sc.nextLine().trim();
+
+        if (marca.isEmpty()) {
+            System.out.println("La marca no puede estar vacía. Intente de nuevo.");
+            return;
+        }
+
+        ArrayList<Producto> productos = productoDAO.listarProductosMarca(marca);
+
+        if (productos.isEmpty()) {
+            System.out.println("No se encontraron productos de la marca: " + marca);
+        } else {
+            System.out.println("Lista de productos de la marca '" + marca + "':");
+            for (Producto producto : productos) {
+                System.out.println(producto.toString());
+            }
+        }
+    }
+
+    public void listarProductosPrecio() {
+        System.out.print("Introduzca el precio mínimo: ");
+        Double precioMin = sc.nextDouble();
+        System.out.print("Introduzca el precio máximo: ");
+        Double precioMax = sc.nextDouble();
+        sc.nextLine(); // Limpiar el buffer
+
+        ArrayList<Producto> productos = productoDAO.listarProductosPrecio(precioMin, precioMax);
+
+        if (productos.isEmpty()) {
+            System.out.println("No se encontraron productos en el rango de precios: " + precioMin + " - " + precioMax);
+        } else {
+            System.out.println("Lista de productos en el rango de precios " + precioMin + " - " + precioMax + ":");
+            for (Producto producto : productos) {
+                System.out.println(producto.toString());
+            }
+        }
+    }
+
+    public void listarProductosTalla() {
+        System.out.println("Introduzca la talla del producto: ");
+        String talla = sc.nextLine().trim();
+
+        if (talla.isEmpty()) {
+            System.out.println("La talla no puede estar vacía. Intente de nuevo.");
+            return;
+        }
+
+        ArrayList<Producto> productos = productoDAO.listarProductosTalla(talla);
+
+        if (productos.isEmpty()) {
+            System.out.println("No se encontraron productos de la talla: " + talla);
+        } else {
+            System.out.println("Lista de productos de la talla '" + talla + "':");
+            for (Producto producto : productos) {
+                System.out.println(producto.toString());
+            }
+        }
+    }
+
+    public void listarProductosColor() {
+        System.out.println("Introduzca el color del producto: ");
+        String color = sc.nextLine().trim();
+
+        if (color.isEmpty()) {
+            System.out.println("El color no puede estar vacío. Intente de nuevo.");
+            return;
+        }
+
+        ArrayList<Producto> productos = productoDAO.listarProductosColor(color);
+
+        if (productos.isEmpty()) {
+            System.out.println("No se encontraron productos del color: " + color);
+        } else {
+            System.out.println("Lista de productos del color '" + color + "':");
+            for (Producto producto : productos) {
+                System.out.println(producto.toString());
+            }
+        }
+    }
+    
 }

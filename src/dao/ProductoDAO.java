@@ -281,6 +281,169 @@ public class ProductoDAO {
         }
             return null;
     }
+
+    public ArrayList<Producto> listarProductosCategoria(String categoria) {
+        Connection conexion = ConexionDB.conectar();
+        ArrayList<Producto> productos = new ArrayList<>();
+
+        if (conexion != null) {
+            String query = "SELECT * FROM Productos WHERE categoria = ?";
+
+            try (PreparedStatement ps = conexion.prepareStatement(query)) {
+                ps.setString(1, categoria); // Establece la categoría en el parámetro
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        int idProducto = rs.getInt("idProducto");
+                        String nombre = rs.getString("nombre");
+                        String descripcion = rs.getString("descripcion");
+                        Double precio = rs.getDouble("precio");
+                        int stock = rs.getInt("stock");
+                        String talla = rs.getString("talla");
+                        String color = rs.getString("color");
+                        String marca = rs.getString("marca");
+
+                        // Crea un objeto Producto con los datos obtenidos
+                        Producto producto = new Producto(nombre, descripcion, precio, stock, talla, color, marca, categoria);
+                        producto.setIdProducto(idProducto);
+                        productos.add(producto); // Agrega el producto a la lista
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al listar productos por categoría: " + e.getMessage());
+            }
+        }
+        return productos; // Devuelve la lista de productos
+    }
+
+    public ArrayList<Producto> listarProductosMarca(String marca) {
+        Connection conexion = ConexionDB.conectar();
+        ArrayList<Producto> productos = new ArrayList<>();
+
+        if (conexion != null) {
+            String query = "SELECT * FROM Productos WHERE marca = ?";
+
+            try (PreparedStatement ps = conexion.prepareStatement(query)) {
+                ps.setString(1, marca); // Establece la marca en el parámetro
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        int idProducto = rs.getInt("idProducto");
+                        String nombre = rs.getString("nombre");
+                        String descripcion = rs.getString("descripcion");
+                        Double precio = rs.getDouble("precio");
+                        int stock = rs.getInt("stock");
+                        String talla = rs.getString("talla");
+                        String color = rs.getString("color");
+                        String categoria = rs.getString("categoria");
+
+                        Producto producto = new Producto(nombre, descripcion, precio, stock, talla, color, marca, categoria);
+                        producto.setIdProducto(idProducto);
+                        productos.add(producto);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al listar productos por marca: " + e.getMessage());
+            }
+        }
+        return productos;
+    }
+
+    public ArrayList<Producto> listarProductosPrecio(Double precioMin, Double precioMax) {
+        Connection conexion = ConexionDB.conectar();
+        ArrayList<Producto> productos = new ArrayList<>();
+
+        if (conexion != null) {
+            String query = "SELECT * FROM Productos WHERE precio BETWEEN ? AND ?";
+
+            try (PreparedStatement ps = conexion.prepareStatement(query)) {
+                ps.setDouble(1, precioMin);
+                ps.setDouble(2, precioMax);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        int idProducto = rs.getInt("idProducto");
+                        String nombre = rs.getString("nombre");
+                        String descripcion = rs.getString("descripcion");
+                        Double precio = rs.getDouble("precio");
+                        int stock = rs.getInt("stock");
+                        String talla = rs.getString("talla");
+                        String color = rs.getString("color");
+                        String marca = rs.getString("marca");
+                        String categoria = rs.getString("categoria");
+
+                        Producto producto = new Producto(nombre, descripcion, precio, stock, talla, color, marca, categoria);
+                        producto.setIdProducto(idProducto);
+                        productos.add(producto);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al listar productos por precio: " + e.getMessage());
+            }
+        }
+        return productos;
+    }
+
+    public ArrayList<Producto> listarProductosTalla(String talla) {
+        Connection conexion = ConexionDB.conectar();
+        ArrayList<Producto> productos = new ArrayList<>();
+
+        if (conexion != null) {
+            String query = "SELECT * FROM Productos WHERE talla = ?";
+
+            try (PreparedStatement ps = conexion.prepareStatement(query)) {
+                ps.setString(1, talla); // Establece la talla en el parámetro
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        int idProducto = rs.getInt("idProducto");
+                        String nombre = rs.getString("nombre");
+                        String descripcion = rs.getString("descripcion");
+                        Double precio = rs.getDouble("precio");
+                        int stock = rs.getInt("stock");
+                        String color = rs.getString("color");
+                        String marca = rs.getString("marca");
+                        String categoria = rs.getString("categoria");
+
+                        Producto producto = new Producto(nombre, descripcion, precio, stock, talla, color, marca, categoria);
+                        producto.setIdProducto(idProducto);
+                        productos.add(producto);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al listar productos por talla: " + e.getMessage());
+            }
+        }
+        return productos;
+    }
+
+    public ArrayList<Producto> listarProductosColor(String color) {
+        Connection conexion = ConexionDB.conectar();
+        ArrayList<Producto> productos = new ArrayList<>();
+
+        if (conexion != null) {
+            String query = "SELECT * FROM Productos WHERE color = ?";
+
+            try (PreparedStatement ps = conexion.prepareStatement(query)) {
+                ps.setString(1, color); // Establece el color en el parámetro
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        int idProducto = rs.getInt("idProducto");
+                        String nombre = rs.getString("nombre");
+                        String descripcion = rs.getString("descripcion");
+                        Double precio = rs.getDouble("precio");
+                        int stock = rs.getInt("stock");
+                        String talla = rs.getString("talla");
+                        String marca = rs.getString("marca");
+                        String categoria = rs.getString("categoria");
+
+                        Producto producto = new Producto(nombre, descripcion, precio, stock, talla, color, marca, categoria);
+                        producto.setIdProducto(idProducto);
+                        productos.add(producto);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al listar productos por color: " + e.getMessage());
+            }
+        }
+        return productos;
+    }
 }
 
 

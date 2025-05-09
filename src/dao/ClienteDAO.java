@@ -188,6 +188,33 @@ public class ClienteDAO {
         }
     }
 
+    public Cliente getClienteEmail(String email) {
+        Connection conexion = ConexionDB.conectar();
+        Cliente cliente = null;
+
+        if (conexion != null) {
+            String query = "SELECT * FROM Cliente WHERE email =  ?";
+
+            try (PreparedStatement ps = conexion.prepareStatement(query)) {
+                ps.setString(1, email);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String nombre = rs.getString("nombre");
+                        String apellido = rs.getString("apellido");
+                        String telefono = rs.getString("telefono");
+
+                        cliente = new Cliente(nombre, apellido, email, telefono);
+                        
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al obtener el cliente por ID: " + e.getMessage());
+            }
+            return cliente;
+        }
+        return null;
+    }
+
 
 
 

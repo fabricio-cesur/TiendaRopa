@@ -106,17 +106,18 @@ public class PedidoDAO {
                         Boolean estado = rs.getBoolean("estado");
                         Double total = rs.getDouble("total");
                         String direccion = rs.getString("direccion");
-                        Cliente cliente = ClienteDAO.getClienteEmail(rs.getString("email")); // Obtener el cliente por su email
+                        Cliente cliente = new Cliente("", "", email,""); // Crear un objeto Cliente con el email
 
                         pedido = new Pedido(cliente, fechaPedido, fechaEntrega, estado, total, direccion);
-                        pedido.setIdPedido(idPedido); // Establecer el ID del pedido
+                        
                     }
                 }
             } catch (SQLException e) {
                 System.err.println("Error al obtener el pedido por ID: " + e.getMessage());
             }
+            return pedido;
         }
-        return pedido;
+        return null;
     }
 
     public void modificarClientePedido(Pedido pedido, Cliente nuevoCliente) { // Modifica el cliente que hizo el pedido
