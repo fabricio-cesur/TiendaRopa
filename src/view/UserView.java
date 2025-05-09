@@ -2,10 +2,13 @@ package view;
 
 import dao.ClienteDAO;
 import dao.UserDAO;
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.Cliente;
+import model.Producto;
 import model.User;
+import utils.ConsoleColors;
 import utils.EnvLoader;
 
 public class UserView {
@@ -40,13 +43,20 @@ public class UserView {
 
     public void iniciarSesion() {
         boolean sesionIniciada = false;
-        do { 
+        do {
             System.out.println("Iniciar sesión");
             System.out.println("------------------");
             System.out.print("Introduce el nombre de usuario: ");
             userEntrada = sc.nextLine();
-            System.out.print("Introduce la contraseña: ");
-            passwordEntrada = sc.nextLine();
+
+            // Leer la contraseña sin mostrarla en la consola
+            Console console = System.console();
+            if (console == null) {
+                System.err.println("No se puede acceder a la consola. Intente ejecutar el programa desde una terminal.");
+                return;
+            }
+            char[] passwordChars = console.readPassword("Introduce la contraseña: ");
+            passwordEntrada = new String(passwordChars);
 
             User user = userDAO.inicioSesion(userEntrada, passwordEntrada);
 
@@ -55,43 +65,52 @@ public class UserView {
                     System.out.println("Inicio de sesión exitoso. Bienvenido, " + user.getUsername() + "!");
                     admin.menuAdmin(user); // Llama al menú del administrador
                     sesionIniciada = true; // Cambia el estado de la sesión a iniciada
-                }
-                else {
+                } else {
                     System.out.println("Inicio de sesión exitoso. Bienvenido, " + user.getUsername() + "!");
                     menuUser(user); // Llama al menú del usuario
                     sesionIniciada = true; // Cambia el estado de la sesión a iniciada
                 }
-                
             } else {
                 System.out.println("Usuario o contraseña incorrectos. Intente de nuevo.");
             }
         } while (!sesionIniciada);
-        
     }
 
     public void registrarUser() {
         System.out.println("Registrarse");
         System.out.println("------------------");
-        System.out.println("Introduce el nombre de usuario: ");
+        System.out.print("Introduce el nombre de usuario: ");
         String username = sc.nextLine();
-        System.out.println("Introduce la contraseña: ");
-        String password = sc.nextLine();
+
+        // Leer la contraseña sin mostrarla en la consola
+        Console console = System.console();
+        if (console == null) {
+            System.err.println("No se puede acceder a la consola. Intente ejecutar el programa desde una terminal.");
+            return;
+        }
+        char[] passwordChars = console.readPassword("Introduce la contraseña: ");
+        String password = new String(passwordChars);
+
         System.out.println("Datos personales");
         System.out.println("------------------");
-        System.out.println("Introduce su nombre");
+        System.out.print("Introduce su nombre: ");
         String nombre = sc.nextLine();
-        System.out.println("Introduce su apellido");
+        System.out.print("Introduce su apellido: ");
         String apellido = sc.nextLine();
-        System.out.println("Introduce su email");
+        System.out.print("Introduce su email: ");
         String email = sc.nextLine();
-        System.out.println("Introduce su nº de telefono");
+        System.out.print("Introduce su nº de teléfono: ");
         String telefono = sc.nextLine();
+
         User user = new User(username, password, "user");
         userDAO.insertarUser(user);
         users.add(user);
+
         Cliente cliente = new Cliente(nombre, apellido, email, telefono);
         clienteDAO.insertarCliente(cliente);
         clientes.add(cliente);
+
+        System.out.println("Usuario registrado con éxito.");
     }
 
 
@@ -203,6 +222,18 @@ public class UserView {
     
     }
 
-    
+    public void mostrarBalance(User user) {
+        System.out.println("Tu balance actual es: " + user.getBalance());
+    }
 
+    public void comprarProducto(User user, Producto producto, int cantidad) {
+        double costoTotal = producto.getPrecio() * cantidad;
+
+        if (user.getBalance() >= costoTotal) {
+            user.subtractBalance(costoTotal);
+            System.out.println(ConsoleColors.SUCCESS + "Compra realizada con éxito. Costo total: " + costoTotal + ConsoleColors.RESET);
+        } else {
+            System.out.println(ConsoleColors.ERROR + "Fondos insuficientes para realizar la compra." + ConsoleColors.RESET);
+        }
+    }
 }

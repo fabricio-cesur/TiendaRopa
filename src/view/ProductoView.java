@@ -3,18 +3,22 @@ package view;
 import dao.ProductoDAO;
 import java.util.ArrayList;
 import java.util.Scanner;
+import model.Banca;
 import model.Producto;
+import model.User;
+import utils.ConsoleColors;
 
 public class ProductoView {
     Scanner sc = new Scanner(System.in);
     ProductoDAO productoDAO = new ProductoDAO();
+    private Banca banca = new Banca(); // Instancia de la banca
 
     public void gestionarInventario() {
         int opcion;
         do { 
-            System.out.println("Gestión de inventario");
+            System.out.println(ConsoleColors.INFO + "Gestión de inventario" + ConsoleColors.RESET);
             System.out.println("1. Hacer restock de productos");
-            System.out.println("2. Modifcar producto");
+            System.out.println("2. Modificar producto");
             System.out.println("3. Eliminar producto");
             System.out.println("4. Listar piezas");
             System.out.println("5. Volver al menú principal");
@@ -22,18 +26,15 @@ public class ProductoView {
             opcion = sc.nextInt();
             sc.nextLine(); // Limpiar el buffer
 
-            
             switch (opcion) {
                 case 1 -> restockProductos();
                 case 2 -> modificarProducto();
                 case 3 -> eliminarProducto();
                 case 4 -> listarProductos();
-                
-                case 5 -> System.out.println("Volviendo al menú principal...");
-                default -> System.out.println("Opción no válida. Intente de nuevo.");
+                case 5 -> System.out.println(ConsoleColors.INFO + "Volviendo al menú principal..." + ConsoleColors.RESET);
+                default -> System.out.println(ConsoleColors.ERROR + "Opción no válida. Intente de nuevo." + ConsoleColors.RESET);
             }
         } while (opcion != 5);
-        
     }
 
     private void restockProductos() {
@@ -41,8 +42,24 @@ public class ProductoView {
         int idProducto = sc.nextInt();
         System.out.print("Ingrese la cantidad a restockear: ");
         int cantidad = sc.nextInt();
-        productoDAO.modificarStockProducto(cantidad, idProducto); 
-        System.out.println("Producto restockeado con éxito.");
+
+        Producto producto = productoDAO.getProductoId(idProducto);
+        if (producto == null) {
+            System.out.println("Producto no encontrado.");
+            return;
+        }
+
+        double precioOriginal = producto.getPrecio();
+        double precioConDescuento = precioOriginal * 0.8; // 20% de descuento para el administrador
+        double costoTotal = precioConDescuento * cantidad;
+
+        if (banca.getBalance() >= costoTotal) {
+            productoDAO.modificarStockProducto(cantidad, idProducto);
+            banca.subtractBalance(costoTotal);
+            System.out.println(ConsoleColors.SUCCESS + "Producto restockeado con éxito. Costo total: " + costoTotal + ConsoleColors.RESET);
+        } else {
+            System.out.println(ConsoleColors.ERROR + "Fondos insuficientes en la banca para realizar el restock." + ConsoleColors.RESET);
+        }
     }
 
     public void modificarProducto() {
@@ -136,12 +153,19 @@ public class ProductoView {
 
     public void listarProductos() {
         ArrayList<Producto> productos = productoDAO.listarProductos();
-        System.out.println("Lista de productos:");
+        System.out.println(ConsoleColors.INFO + "Lista de productos:" + ConsoleColors.RESET);
         for (Producto producto : productos) {
             System.out.println(producto.toString());
+            verificarStock(producto); // Verificar el stock de cada producto
         }
-        
-        
+    }
+
+    private void verificarStock(Producto producto) {
+        if (producto.getStock() < 5) {
+            System.out.println(ConsoleColors.WARNING + "Advertencia: El stock del producto '" + producto.getNombre() + "' es bajo (" + producto.getStock() + "). Reabasteciendo automáticamente..." + ConsoleColors.RESET);
+            productoDAO.modificarStockProducto(40, producto.getIdProducto());
+            System.out.println(ConsoleColors.SUCCESS + "Se añadieron 40 unidades al stock del producto '" + producto.getNombre() + "'." + ConsoleColors.RESET);
+        }
     }
 
     public Producto getIdProducto() {
@@ -279,4 +303,32 @@ public class ProductoView {
         }
     }
     
+    public void venderProducto(User user) {
+        System.out.print("Ingrese el ID del producto a comprar: ");
+        int idProducto = sc.nextInt();
+        System.out.print("Ingrese la cantidad a comprar: ");
+        int cantidad = sc.nextInt();
+
+        Producto producto = productoDAO.getProductoId(idProducto);
+        if (producto == null) {
+            System.out.println("Producto no encontrado.");
+            return;
+        }
+
+        if (producto.getStock() < cantidad) {
+            System.out.println(ConsoleColors.ERROR + "Stock insuficiente para realizar la venta." + ConsoleColors.RESET);
+            return;
+        }
+
+        double costoTotal = producto.getPrecio() * cantidad;
+
+        if (user.getBalance() >= costoTotal) {
+            user.subtractBalance(costoTotal);
+            productoDAO.modificarStockProducto(-cantidad, idProducto);
+            banca.addBalance(costoTotal);
+            System.out.println(ConsoleColors.SUCCESS + "Venta realizada con éxito. Costo total: " + costoTotal + ConsoleColors.RESET);
+        } else {
+            System.out.println(ConsoleColors.ERROR + "Fondos insuficientes para realizar la compra." + ConsoleColors.RESET);
+        }
+    }
 }

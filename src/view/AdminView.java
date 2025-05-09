@@ -5,6 +5,7 @@ import dao.PedidoDAO;
 import dao.UserDAO;
 import java.util.ArrayList;
 import java.util.Scanner;
+import model.Banca;
 import model.Cliente;
 import model.Pedido;
 import model.User;
@@ -15,6 +16,7 @@ public class AdminView {
     private ClienteDAO clienteDAO = new ClienteDAO();
     private PedidoDAO pedidoDAO = new PedidoDAO(); // Cambiar de PedidoView a PedidoDAO
     private ProductoView producto = new ProductoView();
+    private Banca banca = new Banca();
 
     public void menuAdmin(User user) {
         int opcion;
@@ -24,7 +26,8 @@ public class AdminView {
             System.out.println("2. Gestionar inventario");
             System.out.println("3. Gestionar pedidos");
             System.out.println("4. Gestionar descuentos");
-            System.out.println("5. Salir");
+            System.out.println("5. Ver balance de la empresa");
+            System.out.println("6. Salir");
             System.out.print("Selecciona una opción: ");
             opcion = sc.nextInt();
             sc.nextLine(); // Limpiar el buffer
@@ -34,9 +37,11 @@ public class AdminView {
                 case 2 -> producto.gestionarInventario();
                 case 3 -> gestionarPedidos();
                 case 4 -> new DescuentoView().gestionarDescuentosAdmin();
-                case 5 -> System.out.println("Saliendo del menú de administración...");
+                case 5 -> System.out.println("Balance actual de la empresa: " + banca.getBalance());
+                case 6 -> System.out.println("Saliendo del menú de administración...");
+                default -> System.out.println("Opción no válida. Intente de nuevo.");
             }
-        } while (opcion != 5);
+        } while (opcion != 6);
     }
 
     public void gestionarUsuarios() {
