@@ -133,6 +133,9 @@ java -cp "bin;lib/mysql-connector-j-9.2.0.jar" App
 - **fabricio-cesur** - [GitHub](https://github.com/fabricio-cesur)
 - **aburgos11** - [GitHub](https://github.com/aburgos11)
 
+## Finalizacion del proyecto
+Este trabajo ha servido para reforzar lo estudiado este trimestre ya sea programacion junto a base de datos.
+
 ## Licencia
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
