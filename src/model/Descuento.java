@@ -13,9 +13,9 @@ public class Descuento {
     private LocalDate fechaFin; // Fecha de fin de descuento
 
     public Descuento(String nombre, String descripcion, double porcentajeDescuento, LocalDate fechaInicio, LocalDate fechaFin) {
-        this.porcentajeDescuento = porcentajeDescuento;
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.porcentajeDescuento = porcentajeDescuento;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }

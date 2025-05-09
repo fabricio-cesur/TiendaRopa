@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import model.Descuento;
 
 
@@ -77,16 +76,12 @@ public class DescuentoDAO {
                 ResultSet rs = stmt.executeQuery();
                     if (rs.next()) {     
                         
-            //          NI IDEA DE LO QUE ESTÁ PASANDO AQUÍ. PINTA SER PROBLEMA DEL "LOCAL DATE"
-            //          Y SOLO PERMITE HACERSE SI ES "DATE" (EN CASO DE USAR "DATE" NO PUEDO HACER CORRECTAMENTE "DescuentoVIEW")
-            //          MY TERCERA OPCION ES USAR "DATE" ÚNICAMENTE EN "fechaFin" Y QUIZÁ SEA ESA LA OPCIÓN PERO CREO QUE, SIMPLEMENTE, NO SE
-
                         Descuento descuento = new Descuento(
                             rs.getString("nombre"),
                             rs.getString("descripcion"),
                             rs.getDouble("porcentajeDescuento"),
-                            rs.getDate("fechaInicio"),
-                            rs.getDate("fechaFin")
+                            rs.getDate("fechaInicio").toLocalDate(),
+                            rs.getDate("fechaFin").toLocalDate()
                         );                       
                         return descuento;
                     } 
@@ -104,22 +99,23 @@ public class DescuentoDAO {
         
          Connection conexion = ConexionDB.conectar();
          List<Descuento> descuentos = new ArrayList<>();
-         
+        
         if (conexion != null) {
             String query = "SELECT * FROM descuento"; 
             try (Statement stmt = conexion.createStatement(); 
                 ResultSet rs = stmt.executeQuery(query)) {
             
                 while (rs.next()) {
-                    Descuento descuento = new Descuento();
+                    Descuento descuento = new Descuento(
+                        rs.getString("nombre"),
+                        rs.getString("descripcion"),
+                        rs.getDouble("porcentajeDescuento"),
+                        rs.getDate("fechaInicio").toLocalDate(),
+                        rs.getDate("fechaFin").toLocalDate()
+                    );
                     descuento.setIdDescuento(rs.getInt("idDescuento"));
-                    descuento.setNombre(rs.getString("nombre"));
-                    descuento.setDescripcion(rs.getString("descripcion"));
-                    descuento.setPorcentajeDescuento(rs.getDouble("porcentajeDescuento"));
-                    descuento.setFechaInicio(rs.getDate("fechaInicio"));
-                    descuento.setFechaFin(rs.getDate("fechaFin"));
-                    descuento.add(descuento);
-                    
+
+                    descuentos.add(descuento);
                 }
             } catch (SQLException e) {
             System.out.println("Error al realizar la consulta: " + e.getMessage());
