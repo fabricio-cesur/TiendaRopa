@@ -51,7 +51,7 @@ public class AdminView {
             System.out.println("1. Listar usuarios");
             System.out.println("2. Eliminar usuario");
             System.out.println("3. Modificar rol de usuario");
-            System.out.println("4. Información de usuario");
+            System.out.println("4. Ver información detallada de un usuario");
             System.out.println("5. Volver al menú principal");
             System.out.print("Selecciona una opción: ");
             opcion = sc.nextInt();

@@ -8,7 +8,7 @@ public class EnvLoader {
     private static final Properties properties = new Properties();
 
     static {
-        try (FileInputStream fis = new FileInputStream("variables.env")) {
+        try (FileInputStream fis = new FileInputStream("./variables.env")) {
             properties.load(fis);
         } catch (IOException e) {
             System.err.println("Error al cargar el archivo .env: " + e.getMessage());

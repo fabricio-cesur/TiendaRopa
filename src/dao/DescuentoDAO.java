@@ -26,7 +26,7 @@ public class DescuentoDAO {
 
     // Método para actualizar un descuento existente
     public void actualizar(Descuento descuento) {
-        String query = "UPDATE Descuentos SET descripcion = ?, porcentaje = ?, fechaInicio = ?, fechaFin = ?, activo = ? WHERE nombre = ?";
+        String query = "UPDATE Descuento SET descripcion = ?, porcentaje = ?, fechaInicio = ?, fechaFin = ?, activo = ? WHERE nombre = ?";
         try (Connection conexion = ConexionDB.conectar();
              PreparedStatement stmt = conexion.prepareStatement(query)) {
             stmt.setString(1, descuento.getDescripcion());
@@ -55,7 +55,7 @@ public class DescuentoDAO {
 
     // Método para buscar un descuento por nombre
     public Descuento buscarPorNombre(String nombre) {
-        String query = "SELECT * FROM Descuentos WHERE nombre = ?";
+        String query = "SELECT * FROM Descuento WHERE nombre = ?";
         try (Connection conexion = ConexionDB.conectar();
              PreparedStatement stmt = conexion.prepareStatement(query)) {
             stmt.setString(1, nombre);

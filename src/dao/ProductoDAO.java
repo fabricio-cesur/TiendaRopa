@@ -22,7 +22,7 @@ public class ProductoDAO {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
-            String query = "INSERT INTO producto (nombre, descripcion, precio, stock, talla, color, marca, categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Productos (nombre, descripcion, precio, stock, talla, color, marca, categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setString(1, nombre);
@@ -206,7 +206,7 @@ public class ProductoDAO {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
-            String query = "UPDATE Productos SET stock = ? WHERE idProducto = ?";
+            String query = "UPDATE Productos SET marca = ? WHERE idProducto = ?";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setString(1, marca);
@@ -222,7 +222,7 @@ public class ProductoDAO {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
-            String query = "UPDATE Productos SET stock = ? WHERE idProducto = ?";
+            String query = "UPDATE Productos SET categoria = ? WHERE idProducto = ?";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setString(1, categoria);

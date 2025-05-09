@@ -42,7 +42,7 @@ public class ClienteDAO {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
-            String query = "DELETE FROM Cliente WHERE id = ?";
+            String query = "DELETE FROM Cliente WHERE idCliente = ?";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setInt(1, id);
@@ -85,7 +85,7 @@ public class ClienteDAO {
         Cliente cliente = null;
 
         if (conexion != null) {
-            String query = "SELECT * FROM Cliente WHERE id = ?";
+            String query = "SELECT * FROM Cliente WHERE idCliente = ?";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setInt(1, id);
@@ -176,7 +176,7 @@ public class ClienteDAO {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
-            String query = "UPDATE Cliente SET direccion = ? WHERE id = ?";
+            String query = "UPDATE Cliente SET direccion = ? WHERE idCliente = ?";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setString(1, direccion);

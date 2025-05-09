@@ -11,4 +11,9 @@ if %errorlevel% neq 0 (
 
 REM Ejecutar la aplicación
 java -cp "bin" App
+if %errorlevel% neq 0 (
+    echo Error al ejecutar la aplicación. Verifique la configuración.
+    pause
+    exit /b %errorlevel%
+)
 pause

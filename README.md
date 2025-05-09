@@ -48,7 +48,6 @@ TiendaRopa/
 ├── .gitignore
 ├── README.md
 ├── run.bat
-├── variables.env
 ├── .vscode/
 │   └── settings.json
 ├── lib/

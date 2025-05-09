@@ -96,7 +96,7 @@ public class PedidoDAO {
         ArrayList<Pedido> pedidos = new ArrayList<>();
 
         if (conexion != null) {
-            String query = "SELECT p.*, c.email FROM Pedidos p JOIN Clientes c ON p.idCliente = c.idCliente";
+            String query = "SELECT p.*, c.email FROM Pedidos p JOIN Cliente c ON p.idCliente = c.idCliente";
 
             try (Statement stmt = conexion.createStatement();
                  ResultSet rs = stmt.executeQuery(query)) {
@@ -243,7 +243,7 @@ public class PedidoDAO {
         
         int idPedido = pedido.getIdPedido();
         if (conexion != null) {
-            String query = "UPDATE Pedidos SET direccion = ? WHERE idPedido = ?";
+            String query = "UPDATE Pedidos SET direccionEntrega = ? WHERE idPedido = ?";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setString(1, nuevaDireccion);

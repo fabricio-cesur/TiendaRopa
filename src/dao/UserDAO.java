@@ -34,7 +34,7 @@ public class UserDAO {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
-            String query = "DELETE FROM User WHERE id = ?";
+            String query = "DELETE FROM User WHERE idUser = ?";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setInt(1, id);
@@ -48,6 +48,7 @@ public class UserDAO {
     public ArrayList<User> listarUsers() {
         Connection conexion = ConexionDB.conectar();
         ArrayList<User> users = new ArrayList<>();
+        
 
         if (conexion != null) {
             String query = "SELECT * FROM User";
@@ -61,7 +62,7 @@ public class UserDAO {
                     String role = rs.getString("role");
 
                     User user = new User(username, password, role);
-                    user.setId(id);
+                    user.setUserId(id);
                     users.add(user);
                 }
             } catch (SQLException e) {
@@ -77,7 +78,7 @@ public class UserDAO {
         User user = null;
 
         if (conexion != null) {
-            String query = "SELECT * FROM User WHERE id = ?";
+            String query = "SELECT * FROM User WHERE idUser = ?";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setInt(1, id);
