@@ -17,16 +17,7 @@ CREATE TABLE Clientes (
     direccion VARCHAR(255),
     telefono VARCHAR(20)
 );
-CREATE TABLE Empleados (
-    idEmpleado INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    apellido VARCHAR(100) NOT NULL,
-    dni VARCHAR(20) UNIQUE,
-    cargo VARCHAR(100),
-    salario DECIMAL(10, 2),
-    telefono VARCHAR(20),
-    email VARCHAR(100)
-); 
+
 CREATE TABLE Descuentos (
     idDescuento INT AUTO_INCREMENT PRIMARY KEY,
     descripcion TEXT,
@@ -34,9 +25,7 @@ CREATE TABLE Descuentos (
     porcentaje DECIMAL(5, 2),
     cantidadFija DECIMAL(10, 2)
 );
-CREATE TABLE Inventarios (
-    idInventario INT AUTO_INCREMENT PRIMARY KEY
-);
+
 CREATE TABLE Pedidos (
     idPedido INT AUTO_INCREMENT PRIMARY KEY,
     idCliente INT,
@@ -79,16 +68,7 @@ CREATE TABLE DetallePedido (
     FOREIGN KEY (idPedido) REFERENCES Pedido(idPedido),
     FOREIGN KEY (idProducto) REFERENCES Productos(idProducto)
 );
-CREATE TABLE InventarioProducto (
-    idInventarioProducto INT AUTO_INCREMENT PRIMARY KEY,
-    idInventario INT,
-    idProducto INT,
-    ubicacion VARCHAR(100) NULL,
-    cantidad INT UNSIGNED NOT NULL,
-    fechaUltimaActualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (idInventario) REFERENCES Inventarios(idInventario),
-    FOREIGN KEY (idProducto) REFERENCES Productos(idProducto)
-);
+
 CREATE TABLE Carrito (
     idCarrito INT AUTO_INCREMENT PRIMARY KEY,
     idCliente INT,
@@ -107,7 +87,7 @@ CREATE TABLE Cuentas (
     FOREIGN KEY (idPedido) REFERENCES Pedidos(idPedido)
 );
 
-
+/**/
 CREATE 
     ALGORITHM = UNDEFINED 
     DEFINER = `tienda`@`%` 
@@ -125,21 +105,6 @@ VIEW `ProductosMasRentables` AS
 
 
 
-CREATE DEFINER=`tienda`@`%` PROCEDURE `ReducirStockVenta`(IN p_idProducto INT,
-    IN p_cantidadVendida INT)
-BEGIN
-	 DECLARE stockActual INT;
-    DECLARE cantidad_incorrecta CONDITION FOR SQLSTATE '45000';
-    SELECT stock INTO stockActual FROM Productos WHERE idProducto = p_idProducto;
-    IF stockActual < p_cantidadVendida THEN
-        SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Cantidad vendida excede el stock disponible';
-    ELSE
-        UPDATE Productos
-        SET stock = stock - p_cantidadVendida
-        WHERE idProducto = p_idProducto;
-    END IF;
-END
 
 
 CREATE TABLE LogProductos (
