@@ -144,7 +144,7 @@ public class ClienteDAO {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
-            String query = "UPDATE Cliente SET nombre = ? WHERE id = ?";
+            String query = "UPDATE Cliente SET email = ? WHERE id = ?";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setString(1, email);
@@ -160,14 +160,14 @@ public class ClienteDAO {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
-            String query = "UPDATE Cliente SET nombre = ? WHERE id = ?";
+            String query = "UPDATE Cliente SET telefono = ? WHERE id = ?";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setString(1, telefono);
                 ps.setInt(2, id);
                 ps.executeUpdate();
             } catch (SQLException e) {
-                System.err.println("Error al actualizar el telefono del cliente: " + e.getMessage());
+                System.err.println("Error al actualizar el teléfono del cliente: " + e.getMessage());
             }
         }
     }
@@ -176,14 +176,14 @@ public class ClienteDAO {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
-            String query = "UPDATE Cliente SET nombre = ? WHERE id = ?";
+            String query = "UPDATE Cliente SET direccion = ? WHERE id = ?";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setString(1, direccion);
                 ps.setInt(2, id);
                 ps.executeUpdate();
             } catch (SQLException e) {
-                System.err.println("Error al actualizar la direccion del cliente: " + e.getMessage());
+                System.err.println("Error al actualizar la dirección del cliente: " + e.getMessage());
             }
         }
     }

@@ -8,36 +8,68 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import model.Cliente;
 import model.Pedido;
+import model.Producto;
 import model.User;
-
 
 public class PedidoDAO {
     Cliente cliente = null;
+    ProductoDAO productoDAO = new ProductoDAO();
 
     public void insertarPedido(Pedido pedido, User user) {
-        int idPedido = pedido.getIdPedido();
-        int idCliente = user.getUserId(); // Obtener el ID del usuario
-        String fechaPedido = pedido.getFechaPedido();
-        String fechaEntrega = pedido.getFechaEntrega();
-        Boolean estado = pedido.getEstado();
-        Double total = pedido.getTotal();
-        String direccion = pedido.getDireccion();
-
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
-            String sql = "INSERT INTO pedidos (idPedido, idCliente, fechaPedido, fechaEntrega, estado, total, direccion) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-                ps.setInt(1, idPedido);
-                ps.setInt(2, idCliente); // Usar el ID del usuario
-                ps.setString(3, fechaPedido);
-                ps.setString(4, fechaEntrega);
-                ps.setBoolean(5, estado);
-                ps.setDouble(6, total);
-                ps.setString(7, direccion);
-                ps.executeUpdate();
+            String sqlPedido = "INSERT INTO Pedidos (idCliente, fechaPedido, estado, total, direccion) VALUES (?, NOW(), ?, ?, ?)";
+            String sqlDetalle = "INSERT INTO DetallePedido (idPedido, idProducto, cantidad, precioUnitario, subtotal) VALUES (?, ?, ?, ?, ?)";
+
+            try {
+                conexion.setAutoCommit(false); // Iniciar transacción
+
+                // Insertar el pedido
+                try (PreparedStatement psPedido = conexion.prepareStatement(sqlPedido, Statement.RETURN_GENERATED_KEYS)) {
+                    psPedido.setInt(1, user.getUserId());
+                    psPedido.setBoolean(2, pedido.getEstado());
+                    psPedido.setDouble(3, pedido.getTotal());
+                    psPedido.setString(4, pedido.getDireccion());
+                    psPedido.executeUpdate();
+
+                    // Obtener el ID del pedido generado
+                    ResultSet rs = psPedido.getGeneratedKeys();
+                    if (rs.next()) {
+                        pedido.setIdPedido(rs.getInt(1));
+                    }
+                }
+
+                // Insertar los detalles del pedido
+                try (PreparedStatement psDetalle = conexion.prepareStatement(sqlDetalle)) {
+                    for (Producto producto : pedido.getProductos()) {
+                        psDetalle.setInt(1, pedido.getIdPedido());
+                        psDetalle.setInt(2, producto.getIdProducto());
+                        psDetalle.setInt(3, producto.getStock());
+                        psDetalle.setDouble(4, producto.getPrecio());
+                        psDetalle.setDouble(5, producto.getPrecio() * producto.getStock());
+                        psDetalle.addBatch();
+
+                        // Reducir el stock del producto
+                        productoDAO.reducirStock(producto.getIdProducto(), producto.getStock());
+                    }
+                    psDetalle.executeBatch();
+                }
+
+                conexion.commit(); // Confirmar transacción
             } catch (SQLException e) {
-                System.out.println("Error al insertar el pedido: " + e.getMessage());
+                try {
+                    conexion.rollback(); // Revertir transacción en caso de error
+                } catch (SQLException rollbackEx) {
+                    System.err.println("Error al revertir la transacción: " + rollbackEx.getMessage());
+                }
+                System.err.println("Error al insertar el pedido: " + e.getMessage());
+            } finally {
+                try {
+                    conexion.setAutoCommit(true); // Restaurar el modo de confirmación automática
+                } catch (SQLException ex) {
+                    System.err.println("Error al restaurar el modo de confirmación automática: " + ex.getMessage());
+                }
             }
         }
     }
@@ -64,12 +96,12 @@ public class PedidoDAO {
         ArrayList<Pedido> pedidos = new ArrayList<>();
 
         if (conexion != null) {
-            String query = "SELECT * FROM Pedidos";
+            String query = "SELECT p.*, c.email FROM Pedidos p JOIN Clientes c ON p.idCliente = c.idCliente";
 
             try (Statement stmt = conexion.createStatement();
-                ResultSet rs = stmt.executeQuery(query)) {
+                 ResultSet rs = stmt.executeQuery(query)) {
                 while (rs.next()) {
-                    String email = rs.getString("email"); // Obtener el nombre de usuario
+                    String email = rs.getString("email");
                     int idPedido = rs.getInt("idPedido");
                     String fechaPedido = rs.getString("fechaPedido");
                     String fechaEntrega = rs.getString("fechaEntrega");
@@ -77,7 +109,7 @@ public class PedidoDAO {
                     Double total = rs.getDouble("total");
                     String direccion = rs.getString("direccion");
 
-                    Cliente cliente = new Cliente("", "", email,""); // Crear un objeto Cliente con el email
+                    Cliente cliente = new Cliente("", "", email, ""); // Crear un objeto Cliente con el email
 
                     Pedido pedido = new Pedido(cliente, fechaPedido, fechaEntrega, estado, total, direccion);
                     pedido.setIdPedido(idPedido); // Establecer el ID del pedido
@@ -222,6 +254,4 @@ public class PedidoDAO {
             }
         }
     }
-
-
 }

@@ -444,6 +444,41 @@ public class ProductoDAO {
         }
         return productos;
     }
+
+    public boolean verificarStock(int idProducto, int cantidad) {
+        Connection conexion = ConexionDB.conectar();
+
+        if (conexion != null) {
+            String query = "SELECT stock FROM Productos WHERE idProducto = ?";
+            try (PreparedStatement ps = conexion.prepareStatement(query)) {
+                ps.setInt(1, idProducto);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        int stockDisponible = rs.getInt("stock");
+                        return stockDisponible >= cantidad;
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al verificar el stock: " + e.getMessage());
+            }
+        }
+        return false;
+    }
+
+    public void reducirStock(int idProducto, int cantidad) {
+        Connection conexion = ConexionDB.conectar();
+
+        if (conexion != null) {
+            String query = "UPDATE Productos SET stock = stock - ? WHERE idProducto = ?";
+            try (PreparedStatement ps = conexion.prepareStatement(query)) {
+                ps.setInt(1, cantidad);
+                ps.setInt(2, idProducto);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                System.err.println("Error al reducir el stock: " + e.getMessage());
+            }
+        }
+    }
 }
 
 

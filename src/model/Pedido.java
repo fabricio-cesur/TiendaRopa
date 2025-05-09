@@ -41,6 +41,7 @@ public class Pedido {
     public void setEstado(Boolean estado) { this.estado = estado; }
     public void setTotal(Double total) { this.total = total; }
     public void setDireccion(String direccion) { this.direccion = direccion; }
+    public void setProductos(ArrayList<Producto> productos) { this.carrito = productos; } //Setea la lista de productos del pedido
 
     
 }

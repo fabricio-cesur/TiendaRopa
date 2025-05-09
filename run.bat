@@ -1,2 +1,14 @@
-javac -d bin -cp .:lib/mysql-connector-j-9.2.0.jar ./src/*.java ./src/dao/*.java ./src/view/*.java ./src/model/*.java
-java -cp "./bin;./lib/mysql-connector-j-9.2.0.jar" App
+@echo off
+REM Compilar el proyecto
+javac -d bin ./src/utils/EnvLoader.java ./src/*.java ./src/dao/*.java ./src/view/*.java ./src/model/*.java
+
+REM Verificar si la compilación fue exitosa
+if %errorlevel% neq 0 (
+    echo Error durante la compilación. Verifica el código fuente.
+    pause
+    exit /b %errorlevel%
+)
+
+REM Ejecutar la aplicación
+java -cp "bin" App
+pause

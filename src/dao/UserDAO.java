@@ -102,7 +102,7 @@ public class UserDAO {
         User user = null;
 
         if (conexion != null) {
-            String query = "SELECT * FROM User WHERE id = ?";
+            String query = "SELECT * FROM User WHERE username = ?";
 
             try (PreparedStatement ps = conexion.prepareStatement(query)) {
                 ps.setString(1, username);

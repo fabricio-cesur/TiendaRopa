@@ -1,13 +1,12 @@
 package view;
 
-import dao.UserDAO;
 import dao.ClienteDAO;
+import dao.UserDAO;
 import java.util.ArrayList;
 import java.util.Scanner;
-import model.User;
 import model.Cliente;
-import model.Pedido;
-import model.Producto;
+import model.User;
+import utils.EnvLoader;
 
 public class UserView {
 
@@ -18,16 +17,18 @@ public class UserView {
     private ArrayList<User> users = new ArrayList<>();
     private AdminView admin = new AdminView();
     private PedidoView pedido = new PedidoView();
+    private PedidoView pedidos;
     private ProductoView producto = new ProductoView();
 
-    String usuario = "tienda";
-    String passwd = "GestorTiendaRopa8743";
-    String userEntrada;
-    String passwordEntrada;
+    // Cargar las variables de entorno desde el archivo .env
+    private String usuario = EnvLoader.get("APP_USER");
+    private String passwd = EnvLoader.get("APP_PASSWORD");
+    private String userEntrada;
+    private String passwordEntrada;
 
     public UserView() {}
 
-    //Metodo para establecer depencia de
+    // Método para establecer dependencia de PedidoView
     public void setPedidoView(PedidoView pedidos) {
         this.pedidos = pedidos;
     }
@@ -41,29 +42,29 @@ public class UserView {
         boolean sesionIniciada = false;
         do { 
             System.out.println("Iniciar sesión");
-        System.out.println("------------------");
-        System.out.print("Introduce el nombre de usuario: ");
-        userEntrada = sc.nextLine();
-        System.out.print("Introduce la contraseña: ");
-        passwordEntrada = sc.nextLine();
+            System.out.println("------------------");
+            System.out.print("Introduce el nombre de usuario: ");
+            userEntrada = sc.nextLine();
+            System.out.print("Introduce la contraseña: ");
+            passwordEntrada = sc.nextLine();
 
-        User user = userDAO.inicioSesion(userEntrada, passwordEntrada);
+            User user = userDAO.inicioSesion(userEntrada, passwordEntrada);
 
-        if (user != null) {
-            if (user.getRole().equals("admin")) {
-                System.out.println("Inicio de sesión exitoso. Bienvenido, " + user.getUsername() + "!");
-                admin.menuAdmin(user); // Llama al menú del administrador
-                sesionIniciada = true; // Cambia el estado de la sesión a iniciada
+            if (user != null) {
+                if (user.getRole().equals("admin")) {
+                    System.out.println("Inicio de sesión exitoso. Bienvenido, " + user.getUsername() + "!");
+                    admin.menuAdmin(user); // Llama al menú del administrador
+                    sesionIniciada = true; // Cambia el estado de la sesión a iniciada
+                }
+                else {
+                    System.out.println("Inicio de sesión exitoso. Bienvenido, " + user.getUsername() + "!");
+                    menuUser(user); // Llama al menú del usuario
+                    sesionIniciada = true; // Cambia el estado de la sesión a iniciada
+                }
+                
+            } else {
+                System.out.println("Usuario o contraseña incorrectos. Intente de nuevo.");
             }
-            else {
-                System.out.println("Inicio de sesión exitoso. Bienvenido, " + user.getUsername() + "!");
-                menuUser(user); // Llama al menú del usuario
-                sesionIniciada = true; // Cambia el estado de la sesión a iniciada
-            }
-            
-        } else {
-            System.out.println("Usuario o contraseña incorrectos. Intente de nuevo.");
-        }
         } while (!sesionIniciada);
         
     }
@@ -98,12 +99,12 @@ public class UserView {
         int opcion;
         do {
             System.out.println("Bienvenido, " + user.getUsername() + "!");
-            System.out.println("------------------");
             System.out.println("1. Pedidos");
             System.out.println("2. Ver productos");
-            System.out.println("3. Modificar usuario");
-            System.out.println("4. Darse de baja");
-            System.out.println("5. Salir");
+            System.out.println("3. Ver descuentos");
+            System.out.println("4. Modificar usuario");
+            System.out.println("5. Darse de baja");
+            System.out.println("6. Salir");
             System.out.print("Seleccione una opción: ");
             opcion = sc.nextInt();
             sc.nextLine(); // Limpiar el buffer
@@ -111,12 +112,11 @@ public class UserView {
             switch (opcion) {
                 case 1 -> pedido.gestionPedidos();
                 case 2 -> producto.verProductos();
-                case 3 -> modificarUser();
-                case 4 -> eliminarUser();
-                
+                case 3 -> new DescuentoView().gestionarDescuentosUsuario();
+                case 4 -> modificarUser();
+                case 5 -> eliminarUser();
             }
-
-        } while (opcion != 4);
+        } while (opcion != 6);
     }
 
     public void listarUsers() {
@@ -135,9 +135,16 @@ public class UserView {
         return user;
     }
 
+    public void eliminarUser() {
+        User user = this.getUserId();
+        userDAO.eliminarUser(user);
+        
+
+    }
+
     public void modificarUser() {
         User user = this.getUserId();
-        int idUser = user.getUserId();
+        int id = user.getUserId();
         int opcion;
         do { 
             System.out.println("Modificar usuario");
@@ -158,37 +165,37 @@ public class UserView {
                 case 1 -> {
                     System.out.println("Introduce el nuevo nombre de usuario: ");
                     String nuevoNombre = sc.nextLine();
-                    userDAO.modificarNombre(id, nuevoNombre);
+                    userDAO.actualizarUsernameUser(id, userEntrada);
                 }
                 case 2 -> {
                     System.out.println("Introduce la nueva contraseña: ");
                     String nuevaPass = sc.nextLine();
-                    userDAO.modificarPass(id, nuevaPass);
+                    userDAO.actualizarPasswordUser(id, passwd);
                 }
                 case 3 -> {
                     System.out.println("Introduce el nuevo nombre: ");
                     String nuevoNombre = sc.nextLine();
-                    clienteDAO.modificarNombre(cliente, nuevoNombre);
+                    clienteDAO.actualizarNombre(id, nuevoNombre);
                 }
                 case 4 -> {
                     System.out.println("Introduce el nuevo apellido: ");
                     String nuevoApellido = sc.nextLine();
-                    clienteDAO.modificarApellido(cliente, nuevoApellido);
+                    clienteDAO.actualizarApellido(id, nuevoApellido);
                 }
                 case 5 -> {
                     System.out.println("Introduce el nuevo email: ");
                     String nuevoEmail = sc.nextLine();
-                    clienteDAO.modificarEmail(cliente, nuevoEmail);
+                    clienteDAO.actualizarEmail(id, nuevoEmail);
                 }
                 case 6 -> {
                     System.out.println("Introduce la nueva dirección: ");
                     String nuevaDireccion = sc.nextLine();
-                    clienteDAO.modificarDireccion(cliente, nuevaDireccion);
+                    clienteDAO.actualizarDireccion(id, nuevaDireccion);
                 }
                 case 7 -> {
                     System.out.println("Introduce el nuevo teléfono: ");
                     String nuevoTelefono = sc.nextLine();
-                    clienteDAO.modificarTelefono(cliente, nuevoTelefono);
+                    clienteDAO.actualizarTelefono(id, nuevoTelefono);
                 }
             }
         } while (opcion != 8);

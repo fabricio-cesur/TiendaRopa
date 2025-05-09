@@ -1,27 +1,25 @@
 import dao.ConexionDB;
-import dao.UserDAO;
-import java.awt.event.AdjustmentListener;
 import java.sql.Connection;
 import java.util.Scanner;
-import view.VentaView;
-import view.ClienteView;
+import utils.EnvLoader;
+import view.PedidoView;
 import view.UserView;
+
 public class App {
     public static void main(String[] args) throws Exception {
+        // Cargar las variables de entorno desde el archivo .env
+        String usuario = EnvLoader.get("APP_USER");
+        String passwd = EnvLoader.get("APP_PASSWORD");
+
         Connection conexion = ConexionDB.conectar();
-        ClienteView clienteView = new ClienteView();
-        VentaView venta = new VentaView();
-        UserView userView = new UserView();
-        UserDAO userDAO = new UserDAO();
-        
-        //Establecer dependencias
-        clienteView.setVentaView(venta);
-        venta.setClienteView(clienteView);
+        PedidoView pedido = new PedidoView();
+        UserView user = new UserView();
+
+        // Establecer dependencias
+        user.setPedidoView(pedido);
+        pedido.setUserView(user);
 
         Scanner sc = new Scanner(System.in);
-
-        String usuario = "tienda";
-        String passwd = "GestorTiendaRopa8743";
 
         int opcion;
         if (conexion != null) {
@@ -29,7 +27,7 @@ public class App {
         } else {
             System.out.println("Error al conectar a la base de datos.");
         }
-        
+
         do {
             System.out.println("Bienvenido a nombreTienda");
             System.out.println("--------------------------");
@@ -41,8 +39,8 @@ public class App {
             sc.nextLine(); // Limpiar el buffer
 
             switch (opcion) {
-                case 1 -> userView.iniciarSesion();
-                case 2 -> userView.registrarUser();
+                case 1 -> user.iniciarSesion();
+                case 2 -> user.registrarUser();
                 case 3 -> System.out.println("Saliendo...");
                 default -> System.out.println("Opción no válida. Intente de nuevo.");
             }
