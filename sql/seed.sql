@@ -77,7 +77,7 @@ CREATE TABLE Carrito (
     FOREIGN KEY (idCliente) REFERENCES Clientes(idCliente),
     FOREIGN KEY (idProducto) REFERENCES Productos(idProducto)
 );
-    CREATE TABLE Cuentas (
+CREATE TABLE Cuentas (
     idCuenta INT AUTO_INCREMENT PRIMARY KEY,
     tipoTransaccion ENUM('INGRESO', 'GASTO') NOT NULL,
     Cantidad DECIMAL(10, 2) NOT NULL,
