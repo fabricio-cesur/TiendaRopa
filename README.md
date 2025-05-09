@@ -1,30 +1,38 @@
 # TiendaRopa
 
-**TiendaRopa** es un sistema de gestión para una tienda de ropa. Este proyecto permite gestionar usuarios, productos, pedidos y descuentos, proporcionando funcionalidades tanto para usuarios como para administradores.
+**TiendaRopa** es un sistema de gestión para una tienda de ropa. Este proyecto permite gestionar usuarios, productos, pedidos, descuentos y el balance financiero de la empresa, proporcionando funcionalidades tanto para usuarios como para administradores.
 
 ## Características
 
 - **Gestión de usuarios**:
-  - Registro de nuevos usuarios.
+  - Registro de nuevos usuarios con un balance inicial de 500.
   - Inicio de sesión con roles (administrador y cliente).
   - Modificación de datos personales.
   - Eliminación de cuentas.
+  - Visualización del balance del usuario.
 
 - **Gestión de productos**:
   - Listado de productos por categoría, marca, precio, talla y color.
   - Modificación de productos (nombre, descripción, precio, stock, etc.).
   - Eliminación de productos.
-  - Restock de inventario.
+  - Restock de inventario con un descuento del 20% para el administrador.
+  - Verificación automática de stock bajo (menos de 5 unidades) y reabastecimiento automático de 40 unidades.
 
 - **Gestión de pedidos**:
   - Creación de nuevos pedidos.
   - Cancelación de pedidos.
   - Listado de pedidos realizados.
+  - Modificación de pedidos (cliente, fecha, estado, total, dirección).
 
 - **Gestión de descuentos**:
   - Visualización de descuentos disponibles.
   - Creación, modificación y eliminación de descuentos (solo para administradores).
   - Activación y desactivación de descuentos.
+
+- **Gestión financiera (Banca)**:
+  - Balance inicial de la empresa: 45 millones.
+  - Registro de ventas y restock de inventario.
+  - Actualización automática del balance de la empresa y los usuarios tras cada transacción.
 
 ## Requisitos
 
