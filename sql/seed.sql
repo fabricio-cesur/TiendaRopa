@@ -151,3 +151,19 @@ INSERT INTO LogProductos (idProducto, nombre, descripcion, precio, stock, talla,
     VALUES (OLD.idProducto, OLD.nombre, OLD.descripcion, OLD.precio, OLD.stock, OLD.talla, OLD.color, OLD.marca, OLD.categoria);
 END
 
+
+CREATE TABLE PedidosLog (
+    idPedido INT,
+    idCliente INT,
+    fechaPedido TIMESTAMP,
+    fechaEntrega DATE,
+    estado BOOLEAN,
+    total DECIMAL(10, 2),
+    direccion VARCHAR(255),
+    fechaEliminacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE DEFINER=`tienda`@`%` TRIGGER `tienda`.`Pedidos_BEFORE_DELETE` BEFORE DELETE ON `Pedidos` FOR EACH ROW
+BEGIN
+INSERT INTO PedidosLog (idPedido, idCliente, fechaPedido, fechaEntrega, estado, total, direccion)
+VALUES (OLD.idPedido, OLD.idCliente, OLD.fechaPedido, OLD.fechaEntrega, OLD.estado, OLD.total, OLD.direccion);
+END
