@@ -87,7 +87,7 @@ CREATE TABLE Carrito (
     FOREIGN KEY (idPedido) REFERENCES Pedidos(idPedido)
 );
 
-/**/
+/*Vsita para obtener los productos mas rentables*/
 CREATE 
     ALGORITHM = UNDEFINED 
     DEFINER = `tienda`@`%` 
@@ -104,9 +104,25 @@ VIEW `ProductosMasRentables` AS
     ORDER BY SUM(`dp`.`cantidad` * `dp`.`precioUnitario`) DESC
 
 
+/*Procedimiento para redicir stock*/
+CREATE DEFINER=`tienda`@`%` PROCEDURE `ReducirStockVenta`(IN p_idProducto INT,
+    IN p_cantidadVendida INT)
+BEGIN
+	 DECLARE stockActual INT;
+    DECLARE cantidad_incorrecta CONDITION FOR SQLSTATE '45000';
+    SELECT stock INTO stockActual FROM Productos WHERE idProducto = p_idProducto;
+    IF stockActual < p_cantidadVendida THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Cantidad vendida excede el stock disponible';
+    ELSE
+        UPDATE Productos
+        SET stock = stock - p_cantidadVendida
+        WHERE idProducto = p_idProducto;
+    END IF;
+END
 
 
-
+/*Trigger para guaradar los productos eliminados*/
 CREATE TABLE LogProductos (
     idProducto INT,
     nombre VARCHAR(255),
@@ -126,7 +142,7 @@ INSERT INTO LogProductos (idProducto, nombre, descripcion, precio, stock, talla,
     VALUES (OLD.idProducto, OLD.nombre, OLD.descripcion, OLD.precio, OLD.stock, OLD.talla, OLD.color, OLD.marca, OLD.categoria);
 END
 
-
+/*Trigger para guaradar los pedidos eliminados*/
 CREATE TABLE PedidosLog (
     idPedido INT,
     idCliente INT,
