@@ -9,7 +9,7 @@ import java.util.Scanner;
 import model.Descuento;
 
 public class DescuentoVIEW {    
-private DescuentoDAO descuentoDAO = new DescuentoDAO();
+private final DescuentoDAO descuentoDAO = new DescuentoDAO();
 
     public void menuDescuento() {
 
@@ -25,28 +25,22 @@ private DescuentoDAO descuentoDAO = new DescuentoDAO();
             opcionDescuentos = sc.nextInt();
 
             switch (opcionDescuentos) {
-                case 1: // Ver lista de descuentos
+                case 1 -> // Ver lista de descuentos
                 listarDescuentos();
-                break;
 
-                case 2: // Buscar descuentos
-                buscarDescuentos();                                     
-                break;
+                case 2 -> // Buscar descuentos
+                buscarDescuentos();
      
-                case 3: // Agregar descuentos
+                case 3 -> // Agregar descuentos
                 agregarDescuentos();
-                break;
     
-                case 4: // Modificar descuentos
-                actualizarDescuentos();       
-                break;
+                case 4 -> // Modificar descuentos
+                actualizarDescuentos();
 
-                case 5: // Eliminar descuentos
+                case 5 -> // Eliminar descuentos
                 eliminarDescuentos();
-                break;
     
-                case 0: System.out.println("Volviendo al menú inicial");
-                break;
+                case 0 -> System.out.println("Volviendo al menú inicial");
 
             }
 
@@ -137,7 +131,7 @@ private DescuentoDAO descuentoDAO = new DescuentoDAO();
 
         if (descuento == null) {
             System.out.println("No se encontró ningún descuento con ese nombre.");
-            return;
+            
                 
         } else {
             System.out.println("Introduce los nuevos datos del descuento:");

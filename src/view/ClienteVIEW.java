@@ -7,7 +7,7 @@ import model.Cliente;
 
 public class ClienteVIEW {
 
-    private ClienteDAO clienteDAO = new ClienteDAO();
+    private final ClienteDAO clienteDAO = new ClienteDAO();
 
     public void menuClientes() {
         int opcionClientes;
@@ -22,28 +22,22 @@ public class ClienteVIEW {
             opcionClientes = sc.nextInt();
 
             switch (opcionClientes) {
-                case 1: // Ver lista de clientes
+                case 1 -> // Ver lista de clientes
                 listarClientes();
-                break;
 
-                case 2: // Buscar cliente
-                buscarCliente();                                     
-                break;
+                case 2 -> // Buscar cliente
+                buscarCliente();
      
-                case 3: // Agregar cliente
+                case 3 -> // Agregar cliente
                 agregarCliente();
-                break;
     
-                case 4: // Modificar cliente
-                actualizarCliente();       
-                break;
+                case 4 -> // Modificar cliente
+                actualizarCliente();
 
-                case 5: // Eliminar cliente
+                case 5 -> // Eliminar cliente
                 eliminarCliente();
-                break;
     
-                case 0: System.out.println("Volviendo al menú inicial");
-                break;
+                case 0 -> System.out.println("Volviendo al menú inicial");
 
             }
 
@@ -99,7 +93,6 @@ public class ClienteVIEW {
         Cliente cliente = clienteDAO.buscarPorDni(dni);
             if (cliente == null) {
                 System.out.println("No se encontró ningún cliente con el DNI proporcionado.");
-                return;
                 
             } else {
                 System.out.println("Introduce los nuevos datos del cliente:");
