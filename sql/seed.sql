@@ -79,10 +79,10 @@ CREATE TABLE Carrito (
 );
 CREATE TABLE Cuentas (
     idCuenta INT AUTO_INCREMENT PRIMARY KEY,
-    tipoTransaccion ENUM('INGRESO', 'GASTO') NOT NULL,
-    Cantidad DECIMAL(10, 2) NOT NULL,
-    fechaTransaccion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total_ingresos DECIMAL (10,2) NOT NULL,
+    total_gastos  DECIMAL (10,2) NOT NULL,
     descripcion VARCHAR(255),
+    cantidad DECIMAL (10,2) NOT NULL,
     idPedido INT, 
     FOREIGN KEY (idPedido) REFERENCES Pedidos(idPedido)
 );
